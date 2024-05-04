@@ -7,16 +7,14 @@ extends Node2D
 
 const tile_size = 16
 
-var rooms : Array[[Vector2, Array]]
+var rooms : Array # Vector2 (Position) , Array (Directions)
 var room_pos : Vector2
 
 func _ready():
-	var directions : Array = [1,3,4]
-	rooms.append([Vector2(1,5), directions])
-	rooms.append([Vector2(1,7), directions])
-	print(rooms[1][1])
 	randomize()
 	make_rooms()
+	
+	#rooms.append([Vector2(1,7), directions])
 	
 func make_rooms():
 	var num_rooms = randi_range(min_rooms,max_rooms)
@@ -25,9 +23,23 @@ func make_rooms():
 	
 	# Ponto Inicial
 	room_pos = Vector2(randi_range(1,map_size.x),randi_range(1,map_size.y)) # * tile_size * room_size
-	rooms.append(room_pos)
-	current_room =+ 1
-	rooms_left =- 1
+	
+	# Escolher direção Ponto Inicial
+	while true:
+		var direction = randi_range(1,4)
+		var next_room_pos = room_pos + get_direction(direction)
+		if (1 <= next_room_pos.x && next_room_pos.x <= map_size.x) && (1 <= next_room_pos.y && next_room_pos.y <= map_size.y):
+			rooms.append([room_pos,[direction]])
+			current_room += 1
+			rooms_left -= 1
+			break
+	print(rooms, ' Left:', rooms_left)
+	
+	while rooms_left > 0:
+		var quant_directions = randi_range(1,4 if rooms_left > 4 else rooms_left )
+		rooms_left -= quant_directions
+		print(quant_directions, ' Left:', rooms_left)
+	
 	
 	#while true:
 		#var direction = randi_range(1,4)
@@ -38,7 +50,10 @@ func make_rooms():
 			#break
 	
 	for i in randi_range(min_rooms,max_rooms) - 1:
+
 		while true:
+			break
+			await 0.5
 			var direction = randi_range(1,4)
 			room_pos = rooms[rooms.size() - 1] + get_direction(direction)
 			#print(room_pos,rooms.has(room_pos))
@@ -63,11 +78,11 @@ func _draw():
 	# draw_rect(Rect2(room_pos - room_size * tile_size, room_size * tile_size), Color.BLUE,true)
 	for room in rooms:
 		if room == rooms[0]:
-			draw_rect(Rect2(room * tile_size * room_size - room_size * tile_size, room_size * tile_size), Color.GREEN,true)
+			draw_rect(Rect2(room[0] * tile_size * room_size - room_size * tile_size, room_size * tile_size), Color.GREEN,true)
 		elif room == rooms[rooms.size()-1]:
-			draw_rect(Rect2(room * tile_size * room_size - room_size * tile_size, room_size * tile_size), Color.RED,true)
+			draw_rect(Rect2(room[0] * tile_size * room_size - room_size * tile_size, room_size * tile_size), Color.RED,true)
 		else:
-			draw_rect(Rect2(room * tile_size * room_size - room_size * tile_size, room_size * tile_size), Color.BLUE,true)
+			draw_rect(Rect2(room[0] * tile_size * room_size - room_size * tile_size, room_size * tile_size), Color.BLUE,true)
 
 func _input(event):
 	if event.is_action_pressed('ui_select'):
@@ -78,12 +93,12 @@ func _input(event):
 
 func get_direction(number):
 	if number == 1:
-		return Vector2(0,1)
+		return Vector2.UP 
 	elif number == 2:
-		return Vector2(1,0)
+		return Vector2.RIGHT
 	elif number == 3:
-		return Vector2(0,-1)
+		return Vector2.DOWN
 	elif number == 4:
-		return Vector2(-1,0)
+		return Vector2.LEFT
 	else:
 		return Vector2.ZERO

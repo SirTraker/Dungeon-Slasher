@@ -1,0 +1,18 @@
+[gd_scene load_steps=4 format=3 uid="uid://ccosy68havah"]
+
+[ext_resource type="Script" path="res://Level Generator V2/Level Generator V2.gd" id="1_hwwy7"]
+[ext_resource type="Script" path="res://Level Generator V2/Room.gd" id="2_5qy7q"]
+[ext_resource type="Texture2D" uid="uid://d3hpsi65muyod" path="res://icon.svg" id="3_778uq"]
+
+[node name="Level Generator V2" type="Node2D"]
+script = ExtResource("1_hwwy7")
+number_rooms = 5
+
+[node name="Room" type="Node2D" parent="."]
+script = ExtResource("2_5qy7q")
+
+[node name="Camera2D" type="Camera2D" parent="."]
+
+[node name="Icon" type="Sprite2D" parent="."]
+scale = Vector2(0.5, 0.5)
+texture = ExtResource("3_778uq")

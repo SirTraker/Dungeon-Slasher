@@ -1,13 +1,11 @@
 [gd_scene load_steps=2 format=3 uid="uid://k1vfji720hfr"]
 
-[ext_resource type="Script" path="res://Level Generator.gd" id="1_3afe3"]
+[ext_resource type="Script" path="res://Level Generator V1/Level Generator.gd" id="1_q4woa"]
 
 [node name="Level Generator" type="Node2D"]
-script = ExtResource("1_3afe3")
-map_size = null
+script = ExtResource("1_q4woa")
 min_rooms = 10
 max_rooms = 20
-room_size = null
 
 [node name="Camera2D" type="Camera2D" parent="."]
 position = Vector2(2480, 2480)

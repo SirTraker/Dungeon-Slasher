@@ -1,10 +1,14 @@
 extends Node2D
 
+@export_group('Debug')
+@export var debug : bool = false
+
+@export_group('Generation Parameters')
 @export var map_size = Vector2i(8,8)
-var grid_size = Vector2i()
 @export var number_rooms = 20
 @export var room_size : Vector2 = Vector2(4,4)
 
+var grid_size = Vector2()
 var rooms : Array[Room]
 var taken_positions : Array[Vector2]
 
@@ -13,19 +17,24 @@ var tile_size = 16
 func _ready():
 	# Limit Room Quantity
 	if number_rooms > map_size.x * map_size.y:
-		number_rooms = map_size.x * map_size.y
+		number_rooms = map_size.x * map_size.y - 1
 	grid_size = map_size / 2
-	create_rooms()
+	create_start_room()
+	await create_rooms()
+	queue_redraw()
+	print_debug('all good')
 
-func create_rooms():
-	# Setup
+func create_start_room():
 	rooms.append(Room.new())
 	rooms[0].make_room(Vector2.ZERO, 1)
 	taken_positions.insert(0,rooms[0].grid_pos)
-	var check_pos = Vector2.ZERO
-	for i in rooms.size() - 1: 
-		print('Room Pos:',rooms[i].grid_pos)
-	
+
+func create_end_room():
+	pass
+
+func create_rooms():
+	# Setup
+	var check_pos = Vector2.ZERO	
 	# Tree expansion limitators
 	var random_compare = 0.2
 	var random_compare_start = 0.5
@@ -33,8 +42,9 @@ func create_rooms():
 	
 	# Add Rooms
 	for i in number_rooms:
-		queue_redraw()
-		await get_tree().create_timer(0.2).timeout
+		if debug:
+			queue_redraw()
+			await get_tree().create_timer(0.2).timeout
 		# Tree Expansion change
 		var random_perc = i / (number_rooms - 1)
 		random_compare = lerp(random_compare_start,random_compare_end,random_perc)
@@ -46,10 +56,11 @@ func create_rooms():
 			while true:
 				check_pos = selective_new_position()
 				iterations += 1
-				if number_of_neighbors(check_pos) == 1 && iterations > 100:
+				if number_of_neighbors(check_pos) == 1 || iterations > 100:
 					break
-			if iterations >= 50:
+			if iterations > 100:
 				print("error: could not create with fewer neighbors than : ", number_of_neighbors(check_pos))
+				check_pos = new_position()
 		
 		# Finalize position
 		rooms.append(Room.new())
@@ -93,7 +104,7 @@ func selective_new_position():
 		while true:
 			index = randi_range(0, taken_positions.size() - 1)
 			inc += 1
-			if number_of_neighbors(taken_positions[index]) == 1 && inc > 100:
+			if number_of_neighbors(taken_positions[index]) == 1 || inc > 100:
 				break
 		x = taken_positions[index].x
 		y = taken_positions[index].y
@@ -129,12 +140,21 @@ func number_of_neighbors(checkingPos : Vector2):
 	return ret
 
 func _draw():
-	for y in map_size.y + 1:
-		var row = (y * room_size.y * tile_size) - grid_size.y * tile_size * (map_size.y/2)
-		for x in map_size.x + 1:
-			var collum = (x * room_size.x * tile_size) - grid_size.x * tile_size * (map_size.x/2)
+	# grid
+	#for y in map_size.y:
+		#var row = (y * room_size.y * tile_size) - grid_size.y * tile_size * (map_size.y/2)
+		#for x in map_size.x:
+			#var collum = (x * room_size.x * tile_size) - grid_size.x * tile_size * (map_size.x/2)
+			#draw_rect(Rect2(Vector2(collum,row),room_size * tile_size),Color.WHITE,false)
+	
+	# grid
+	for y in map_size.y:
+		var row = y * room_size.y * tile_size - grid_size.y  * room_size.y * tile_size
+		for x in map_size.x:
+			var collum = x * room_size.x * tile_size - grid_size.x  * room_size.x * tile_size
 			draw_rect(Rect2(Vector2(collum,row),room_size * tile_size),Color.WHITE,false)
 	
+	# rooms
 	for room in rooms:
 		var pos = room.grid_pos * (tile_size * room_size)
 		var size = room_size * tile_size
@@ -150,5 +170,7 @@ func _input(event):
 	if event.is_action_pressed('ui_select'):
 		rooms.clear()
 		taken_positions.clear()
+		create_start_room()
 		create_rooms()
+		create_end_room()
 		queue_redraw()

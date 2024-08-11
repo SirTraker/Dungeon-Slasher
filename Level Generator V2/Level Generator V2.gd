@@ -19,18 +19,17 @@ func _ready():
 	if number_rooms > map_size.x * map_size.y:
 		number_rooms = map_size.x * map_size.y - 1
 	grid_size = map_size / 2
-	create_start_room()
-	await create_rooms()
-	queue_redraw()
-	print_debug('all good')
+	var error = 1
+	while error == 1:
+		create_start_room()
+		await create_rooms()
+		error = create_exit_room()
+		queue_redraw()
 
 func create_start_room():
 	rooms.append(Room.new())
 	rooms[0].make_room(Vector2.ZERO, 1)
 	taken_positions.insert(0,rooms[0].grid_pos)
-
-func create_end_room():
-	pass
 
 func create_rooms():
 	# Setup
@@ -50,7 +49,7 @@ func create_rooms():
 		random_compare = lerp(random_compare_start,random_compare_end,random_perc)
 		# Grab new Position
 		check_pos = new_position()
-		# Test new Position
+		# Check if 
 		if number_of_neighbors(check_pos) > 1 && randf() < random_compare:
 			var iterations = 0
 			while true:
@@ -66,6 +65,40 @@ func create_rooms():
 		rooms.append(Room.new())
 		rooms.back().make_room(check_pos)
 		taken_positions.insert(0, check_pos)
+
+func create_exit_room():
+	var possible_exit : Array[Vector2]
+	for i in map_size.x * 0.2 * 2:
+		var x = map_size.x / 2 * (-1 if i == 0 else 1)
+		for y in map_size.y:
+			y -= map_size.y / 2
+			#if taken_positions.has(Vector2(x,y)):
+				#if(number_of_neighbors(Vector2(x,y)) == 1):
+					#possible_exit.append(Vector2(x,y))
+				#elif((number_of_neighbors(Vector2(x,y-1)) > 1)||(number_of_neighbors(Vector2(x,y+1)) > 1)):
+					#possible_exit.append(Vector2(x,y))
+			if taken_positions.has(Vector2(x,y)) && ((number_of_neighbors(Vector2(x,y)) == 1)
+			|| ((number_of_neighbors(Vector2(x,y-1)) > 1)||(number_of_neighbors(Vector2(x,y+1)) > 1))):
+				possible_exit.append(Vector2(x,y))
+	for i in map_size.y * 0.2 * 2:
+		var y = map_size.y / 2 * (-1 if i == 0 else 1)
+		for x in map_size.x:
+			x -= map_size.x / 2
+			#if taken_positions.has(Vector2(x,y)):
+				#if(number_of_neighbors(Vector2(x,y)) == 1):
+					#possible_exit.append(Vector2(x,y))
+				#elif((number_of_neighbors(Vector2(x-1,y)) > 1)||(number_of_neighbors(Vector2(x+1,y)) > 1)):
+					#possible_exit.append(Vector2(x,y))
+			if taken_positions.has(Vector2(x,y)) && ((number_of_neighbors(Vector2(x,y)) == 1)
+			|| ((number_of_neighbors(Vector2(x-1,y)) > 1)||(number_of_neighbors(Vector2(x+1,y)) > 1))):
+				possible_exit.append(Vector2(x,y))
+	if possible_exit.size() == 0:
+		return 1
+	var i = randi_range(0,possible_exit.size()-1)
+	for room in rooms:
+		if room.grid_pos == possible_exit[i]:
+			room.type = 2
+	return 0
 
 func new_position():
 	var x = 0
@@ -141,13 +174,6 @@ func number_of_neighbors(checkingPos : Vector2):
 
 func _draw():
 	# grid
-	#for y in map_size.y:
-		#var row = (y * room_size.y * tile_size) - grid_size.y * tile_size * (map_size.y/2)
-		#for x in map_size.x:
-			#var collum = (x * room_size.x * tile_size) - grid_size.x * tile_size * (map_size.x/2)
-			#draw_rect(Rect2(Vector2(collum,row),room_size * tile_size),Color.WHITE,false)
-	
-	# grid
 	for y in map_size.y:
 		var row = y * room_size.y * tile_size - grid_size.y  * room_size.y * tile_size
 		for x in map_size.x:
@@ -168,9 +194,11 @@ func _draw():
 
 func _input(event):
 	if event.is_action_pressed('ui_select'):
-		rooms.clear()
-		taken_positions.clear()
-		create_start_room()
-		create_rooms()
-		create_end_room()
-		queue_redraw()
+		var error = 1
+		while error == 1:
+			rooms.clear()
+			taken_positions.clear()
+			create_start_room()
+			await create_rooms()
+			error = create_exit_room()
+			queue_redraw()

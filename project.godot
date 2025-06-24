@@ -11,8 +11,17 @@ config_version=5
 [application]
 
 config/name="Dungeon Slasher"
-config/features=PackedStringArray("4.2", "GL Compatibility")
+run/main_scene="res://Scenes/Teste Level Generator.tscn"
+config/features=PackedStringArray("4.3", "GL Compatibility")
 config/icon="res://icon.svg"
+
+[autoload]
+
+Console="*res://addons/console/console.gd"
+
+[editor_plugins]
+
+enabled=PackedStringArray("res://addons/console/plugin.cfg")
 
 [rendering]
 

@@ -1,5 +1,5 @@
 ea4bc82a6ad023ab7ee23ee620429895
-::res://::1750793303
+::res://::1750873778
 default_bus_layout.tres::AudioBusLayout::2761501548948315440::1711890120::0::1::::<><>::
 icon.svg::CompressedTexture2D::9139943685860064543::1711880832::1714588122::1::::<><>::
 ::res://addons/::1750793248
@@ -10,15 +10,15 @@ plugin.cfg::TextFile::-1::1750793248::0::1::::<><>::
 ::res://addons/console/cs_bindings/::1750793248
 ::res://Aseprite/::1716149631
 Tileset.png::CompressedTexture2D::8616946040738558873::1716149628::1716149631::1::::<><>::
-::res://Backups/::1750792419
-Level Generator Backup.gd::GDScript::-1::1750628504::0::1::::<>Node2D<>::
 ::res://Old Game Files/::1750792478
 Atlas 1.png::CompressedTexture2D::2585893155122783869::1711881383::1750792478::1::::<><>::
 Atlas 2.png::CompressedTexture2D::1636302091526333351::1711881383::1750792478::1::::<><>::
 Atlas 5.png::CompressedTexture2D::5066721985455885636::1711894235::1750792478::1::::<><>::
-::res://Scenes/::1750793281
-Teste Level Generator.tscn::PackedScene::145389934931290923::1750793281::0::1::::<><>::res://Scripts/Level Generator.gd<>uid://d3hpsi65muyod::::res://icon.svg
+::res://Scenes/::1750805849
+Teste Level Generator.tscn::PackedScene::145389934931290923::1750805849::0::1::::<><>::res://Scripts/Level Generator.gd<>uid://d3hpsi65muyod::::res://icon.svg
 Test_Scene.tscn::PackedScene::2539400867230827689::1750790653::0::1::::<><>::uid://du1d3v0kpod2x::::res://Aseprite/Tileset.png
-::res://Scripts/::1750792428
-Level Generator.gd::GDScript::-1::1750790652::0::1::::<>Node2D<>::
-Room.gd::GDScript::-1::1750788515::0::1::::Room<>Node2D<>::
+::res://Scripts/::1750805849
+Level Generator.gd::GDScript::-1::1750805849::0::1::::<>Node2D<>::
+Room.gd::GDScript::-1::1750805566::0::1::::Room<>Node2D<>::
+::res://Temp Backups/::1750792419
+Level Generator Backup.gd::GDScript::-1::1750628504::0::1::::<>Node2D<>::

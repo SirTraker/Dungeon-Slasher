@@ -1,5 +1,2 @@
-res://Level Generator V2/level_generator_v_2.tscn
-res://Level Generator V3.gd
-res://Test_Scene.tscn
-res://Level Generator V2/Room.gd
 res://Scenes/Teste Level Generator.tscn
+res://Scripts/Level Generator.gd

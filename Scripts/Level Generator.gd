@@ -66,8 +66,8 @@ func create_rooms():
 		var random_compare = lerp(random_compare_start, random_compare_end, random_perc)
 		var allow_multiple_neighbors = randf() >= random_compare
 
-		var base_pos = taken_positions.pick_random()
-		var check_pos = find_new_position(base_pos, allow_multiple_neighbors)
+		var base_pos : Vector2 = taken_positions.pick_random()
+		var check_pos : Vector2 = find_new_position(base_pos, allow_multiple_neighbors)
 		
 		if check_pos == Vector2.INF:
 			print("Aviso: Não foi possível encontrar nova posição válida. Tentando Novamente...")
@@ -84,6 +84,50 @@ func create_rooms():
 		if debug:
 			queue_redraw()
 			await get_tree().create_timer(0.2).timeout
+
+func connect_rooms(pos_a: Vector2, pos_b: Vector2):
+	var dir = pos_b - pos_a
+	var room_a = get_room_at(pos_a)
+	var room_b = get_room_at(pos_b)
+	
+	if dir == Vector2.UP:
+		room_a.door_top = true
+		room_b.door_bot = true
+	elif dir == Vector2.DOWN:
+		room_a.door_bot = true
+		room_b.door_top = true
+	elif dir == Vector2.LEFT:
+		room_a.door_left = true
+		room_b.door_right = true
+	elif dir == Vector2.RIGHT:
+		room_a.door_right = true
+		room_b.door_left = true
+
+	if not room_b in room_a.neighbors:
+		room_a.neighbors.append(room_b)
+	if not room_a in room_b.neighbors:
+		room_b.neighbors.append(room_a)
+
+func disconnect_rooms(pos_a: Vector2, pos_b: Vector2):
+	var dir = pos_b - pos_a
+	var room_a = get_room_at(pos_a)
+	var room_b = get_room_at(pos_b)
+	
+	if dir == Vector2.UP:
+		room_a.door_top = false
+		room_b.door_bot = false
+	elif dir == Vector2.DOWN:
+		room_a.door_bot = false
+		room_b.door_top = false
+	elif dir == Vector2.LEFT:
+		room_a.door_left = false
+		room_b.door_right = false
+	elif dir == Vector2.RIGHT:
+		room_a.door_right = false
+		room_b.door_left = false
+		
+	room_a.neighbors.erase(room_b)
+	room_b.neighbors.erase(room_a)
 
 func assign_entry_and_exit_rooms() -> bool:
 	var candidate_indices := []
@@ -191,6 +235,12 @@ func number_of_neighbors(pos : Vector2):
 		if taken_positions.has(pos + dir):
 			count += 1
 	return count
+
+func get_room_at(pos: Vector2) -> Room:
+	for room in rooms:
+		if room.grid_pos == pos:
+			return room
+	return null
 
 func clear_rooms():
 	rooms.clear()

@@ -2,6 +2,7 @@ extends Node2D
 class_name Room
 
 var previous_room_pos : Vector2 = Vector2.INF
+var neighbors : Array = []
 
 @export var grid_pos : Vector2
 @export var type : int = 0

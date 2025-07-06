@@ -1,5 +1,6 @@
+TileMapLayer
+Node2D
+TileMap
 Node
 Timer
 Camera2D
-Node2D
-TileMap

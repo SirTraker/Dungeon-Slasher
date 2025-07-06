@@ -12,7 +12,7 @@ var neighbors : Array = []
 @export var door_left : bool
 @export var door_right : bool
 
-func make_room(_pos, _type = type, _previous_room_pos = previous_room_pos):
+func make_room(_pos: Vector2, _type: int = type, _previous_room_pos: Vector2 = previous_room_pos) -> void:
 	grid_pos = _pos
 	type = _type
 	previous_room_pos = _previous_room_pos
@@ -28,15 +28,3 @@ func get_door(direction):
 		return door_right
 	else:
 		return false
-
-func disable_door(direction):
-	if direction == Vector2.UP:
-		door_top = false
-	elif direction == Vector2.DOWN:
-		door_bot = false
-	elif direction == Vector2.LEFT:
-		door_left = false
-	elif direction == Vector2.RIGHT:
-		door_right = false
-	else:
-		push_error('Erro: Direção fornecida não é válida!')

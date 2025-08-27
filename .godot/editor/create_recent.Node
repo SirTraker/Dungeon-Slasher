@@ -1,6 +1,14 @@
-TileMapLayer
 Node2D
-TileMap
+CollisionShape2D
+Area2D
 Node
-Timer
+RichTextLabel
+Control
+CanvasLayer
+Container
+TileMap
+Sprite2D
 Camera2D
+AnimatedSprite2D
+CharacterBody2D
+TileMapLayer

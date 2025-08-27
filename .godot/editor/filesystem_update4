@@ -1,4 +1,2 @@
-res://Scenes/Teste Level Generator.tscn
 res://Map_TileSet.tres
-res://Scripts/Level Generator.gd
-res://Scenes/Test_Scene.tscn
+res://Scenes/Main Scene.tscn

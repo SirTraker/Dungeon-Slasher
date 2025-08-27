@@ -1,15 +1,17 @@
 extends Node2D
 
-@export_group('Debug')
-@export var debug : bool = false
+# ──────────────── CONFIGURAÇÃO ────────────────
+@export_group("Debug")
+@export var debug: bool = false
 
-@export_group('Parametros de Geração')
-@export var map_size = Vector2i(5,5)
-@export var terrain_set := 0
-@export var padding = 10  # espaçamento entre salas
+@export_group("Parâmetros de Geração")
+@export var map_size = Vector2i(5, 5)
+@export var terrain_set = 0
+@export var padding = 10
 @export var number_rooms = 5
-@export var room_size : Vector2i = Vector2(24,16)
+@export var room_size = Vector2i(24, 16)
 
+# ──────────────── CONSTANTES ────────────────
 const DIRECTIONS = [Vector2.UP, Vector2.DOWN, Vector2.LEFT, Vector2.RIGHT]
 
 enum TerrainType {
@@ -17,131 +19,95 @@ enum TerrainType {
 	FLOOR = 0,
 	WALL = 1
 }
-var ground : TileMapLayer
-var walls : TileMapLayer
+
+# ──────────────── VARIÁVEIS ────────────────
+var ground: TileMapLayer
+var walls: TileMapLayer
 
 var grid_size = Vector2()
-var rooms : Array[Room]
-var taken_positions : Array[Vector2]
+var rooms: Array[Room] = []
+var taken_positions: Array[Vector2] = []
 
 var tile_size = 16
 
+
+#region ▶ Ciclo Principal
 func _ready():
 	ground= $Map/Ground
 	walls= $Map/Walls
-	# Limit Room Quantity
-	if number_rooms > map_size.x * map_size.y:
-		number_rooms = map_size.x * map_size.y - 1
-	grid_size = map_size / 2
-	await inicialize_rooms() # Gerar Salas
-	instantiate_tilemap()
-	print('done')
-
-func inicialize_rooms():
-	var max_attempts = 30
-	var success = false
 	
-	for attempt in range(max_attempts):
+	# Garantir que o número de salas não excede a grelha
+	number_rooms = min(number_rooms, map_size.x * map_size.y - 1)
+	grid_size = map_size / 2
+	
+	await generate_rooms() # Gerar Salas
+	instantiate_tilemap()
+
+func _input(event):
+	if event.is_action_pressed('Generate Map'):
+		walls.clear()
+		ground.clear()
+		await generate_rooms() # Gerar Salas
+		instantiate_tilemap()
+#endregion
+
+#region 🧱 Geração de salas
+func generate_rooms():
+	var max_attempts = 30
+	
+	for attempt in max_attempts:
 		clear_rooms()
 		
-		# Começa com a sala inicial
-		var start_pos = Vector2(randi_range(-grid_size.x, grid_size.x), randi_range(-grid_size.y, grid_size.y))
+		# Criar Sala Inicial
+		var start_pos = Vector2(
+			randi_range(-grid_size.x, grid_size.x), 
+			randi_range(-grid_size.y, grid_size.y)
+		)
+		
 		var start_room = Room.new()
-		start_room.make_room(start_pos, 0)
+		start_room.make_room(start_pos,room_size * tile_size, 0)
 		rooms.append(start_room)
 		taken_positions.append(start_pos)
 		
 		await create_rooms()
-		await connect_doors()
-
+		
+		for room in rooms:
+			for dir in DIRECTIONS:
+				var neighbor_pos = room.grid_pos + dir
+				if taken_positions.has(neighbor_pos):
+					connect_rooms(room.grid_pos, neighbor_pos)
+		
 		if assign_entry_and_exit_rooms():
-			success = true
-			break
-		#else :
-			#print("Tentativa %d: não foi possível gerar mapa com entrada e saída válidas." % attempt)
-	
-	if not success:
-		push_error("Erro: Não foi possível gerar um mapa válido após várias tentativas.")
-	queue_redraw()
-	print("1"," rooms = ", rooms.size(), " taken = ", taken_positions.size())
+			queue_redraw()
+			return # sucesso
+	push_error("Erro: Não foi possível gerar um mapa válido após várias tentativas.")
 
 func create_rooms():
-	var random_compare_start = 0.5
-	var random_compare_end = 0.1
-	
-	if debug:
-			queue_redraw()
-			await get_tree().create_timer(0.2).timeout
-	
 	var i = 1
+	var compare_start = 0.5
+	var compare_end = 0.1
+	
 	while i < number_rooms:
+		var ratio = float(i) / (number_rooms - 1)
+		var allow_multi_neighbors = randf() >= lerp(compare_start, compare_end, ratio)
 		
-		var random_perc = float(i) / (number_rooms - 1)
-		var random_compare = lerp(random_compare_start, random_compare_end, random_perc)
-		var allow_multiple_neighbors = randf() >= random_compare
-
-		var base_pos : Vector2 = taken_positions.pick_random()
-		var check_pos : Vector2 = find_new_position(base_pos, allow_multiple_neighbors)
+		var base_pos = taken_positions.pick_random()
+		var new_pos = find_new_position(base_pos, allow_multi_neighbors)
 		
-		if check_pos == Vector2.INF:
-			#print("Aviso: Não foi possível encontrar nova posição válida. Tentando Novamente...")
-			continue # não avança o contador, tenta de novo
+		if new_pos == Vector2.INF:
+			continue
 		
-		# Criar e armazenar a nova sala corretamente
+		# Criar e armazenar a nova sala
 		var new_room = Room.new()
-		new_room.make_room(check_pos,0,base_pos)
+		new_room.make_room(new_pos,0,base_pos)
 		rooms.append(new_room)
-		taken_positions.insert(0, check_pos)
+		taken_positions.insert(0, new_pos)
 		
 		i += 1 # só avança se a sala foi criada com sucesso
 		
 		if debug:
 			queue_redraw()
 			await get_tree().create_timer(0.2).timeout
-
-func connect_rooms(pos_a: Vector2, pos_b: Vector2):
-	var dir = pos_b - pos_a
-	var room_a = get_room_at_pos(pos_a)
-	var room_b = get_room_at_pos(pos_b)
-	
-	if dir == Vector2.UP:
-		room_a.door_top = true
-		room_b.door_bot = true
-	elif dir == Vector2.DOWN:
-		room_a.door_bot = true
-		room_b.door_top = true
-	elif dir == Vector2.LEFT:
-		room_a.door_left = true
-		room_b.door_right = true
-	elif dir == Vector2.RIGHT:
-		room_a.door_right = true
-		room_b.door_left = true
-
-	if not room_b in room_a.neighbors:
-		room_a.neighbors.append(room_b)
-	if not room_a in room_b.neighbors:
-		room_b.neighbors.append(room_a)
-
-func disconnect_rooms(pos_a: Vector2, pos_b: Vector2):
-	var dir = pos_b - pos_a
-	var room_a = get_room_at_pos(pos_a)
-	var room_b = get_room_at_pos(pos_b)
-	
-	if dir == Vector2.UP:
-		room_a.door_top = false
-		room_b.door_bot = false
-	elif dir == Vector2.DOWN:
-		room_a.door_bot = false
-		room_b.door_top = false
-	elif dir == Vector2.LEFT:
-		room_a.door_left = false
-		room_b.door_right = false
-	elif dir == Vector2.RIGHT:
-		room_a.door_right = false
-		room_b.door_left = false
-		
-	room_a.neighbors.erase(room_b)
-	room_b.neighbors.erase(room_a)
 
 func assign_entry_and_exit_rooms() -> bool:
 	var candidate_rooms := []
@@ -201,20 +167,20 @@ func assign_entry_and_exit_rooms() -> bool:
 	
 	return true
 
-# !!! Substituir por connect_rooms()
-func connect_doors():
-	for room in rooms:
-		for dir in DIRECTIONS:
-			var neighbor_pos = room.grid_pos + dir
-			if taken_positions.has(neighbor_pos):
-				match dir:
-					Vector2.UP: room.door_top = true
-					Vector2.DOWN: room.door_bot = true
-					Vector2.LEFT: room.door_left = true
-					Vector2.RIGHT: room.door_right = true
-		queue_redraw()
-
 func find_new_position(base_pos : Vector2, require_single_neighbor := false) -> Vector2:
+	for _attempt in 200:
+		var offset = DIRECTIONS.pick_random()
+		var new_pos = base_pos + offset
+		
+		if new_pos.x < -grid_size.x or new_pos.x > grid_size.x:
+			continue
+		if new_pos.y < -grid_size.y or new_pos.y > grid_size.y:
+			continue
+		if taken_positions.has(new_pos):
+			continue
+		if require_single_neighbor and number_of_neighbors(new_pos) != 1:
+			continue
+	
 	var attempts = 0
 	while attempts < 200:
 		attempts += 1
@@ -235,13 +201,61 @@ func find_new_position(base_pos : Vector2, require_single_neighbor := false) -> 
 		return new_pos
 	
 	return Vector2.INF  # sem posição válida encontrada
+#endregion
 
-func number_of_neighbors(pos : Vector2):
-	var count = 0
-	for dir in DIRECTIONS:
-		if taken_positions.has(pos + dir):
-			count += 1
-	return count
+#region 🔗 Conexões entre salas
+func connect_rooms(pos_a: Vector2, pos_b: Vector2):
+	var dir = pos_b - pos_a
+	var room_a = get_room_at_pos(pos_a)
+	var room_b = get_room_at_pos(pos_b)
+	
+	match dir:
+		Vector2.UP:
+			room_a.door_top = true
+			room_b.door_bot = true
+		Vector2.DOWN:
+			room_a.door_bot = true
+			room_b.door_top = true
+		Vector2.LEFT:
+			room_a.door_left = true
+			room_b.door_right = true
+		Vector2.RIGHT:
+			room_a.door_right = true
+			room_b.door_left = true
+	
+	if not room_b in room_a.neighbors:
+		room_a.neighbors.append(room_b)
+	if not room_a in room_b.neighbors:
+		room_b.neighbors.append(room_a)
+
+func disconnect_rooms(pos_a: Vector2, pos_b: Vector2):
+	var dir = pos_b - pos_a
+	var room_a = get_room_at_pos(pos_a)
+	var room_b = get_room_at_pos(pos_b)
+	
+	match dir:
+		Vector2.UP:
+			room_a.door_top = false
+			room_b.door_bot = false
+		Vector2.DOWN:
+			room_a.door_bot = false
+			room_b.door_top = false
+		Vector2.LEFT:
+			room_a.door_left = false
+			room_b.door_right = false
+		Vector2.RIGHT:
+			room_a.door_right = false
+			room_b.door_left = false
+		
+	room_a.neighbors.erase(room_b)
+	room_b.neighbors.erase(room_a)
+
+#endregion
+
+#region 🧰 Utilitários de sala
+func clear_rooms():
+	rooms.clear()
+	taken_positions.clear()
 
 func get_room_at_pos(pos: Vector2) -> Room:
 	for room in rooms:
@@ -249,20 +263,33 @@ func get_room_at_pos(pos: Vector2) -> Room:
 			return room
 	return null
 
-func clear_rooms():
-	rooms.clear()
-	taken_positions.clear()
+func number_of_neighbors(pos: Vector2) -> int:
+	var count := 0
+	for dir in DIRECTIONS:
+		if taken_positions.has(pos + dir):
+			count += 1
+	return count
 
+func remove_duplicates(array: Array) -> Array:
+	var result := []
+	var seen := {}
+	for value in array:
+		if not seen.has(value):
+			seen[value] = true
+			result.append(value)
+	return result
+
+#endregion
+
+#region 🧱 Tilemap: Preenchimento e escavação
 func instantiate_tilemap():
-	fill_entire_map_with(TerrainType.FLOOR, ground)
-	fill_entire_map_with(TerrainType.WALL, walls)
-	for room in rooms:
-		print(room.grid_pos)
-		carve_room(room.grid_pos, walls)
-	print("acabou tilemap")
+	fill_tilemap_with_static_tiles() # Preencher o mapa inteiro com tiles base (sem autotile)
+	dig_map(walls)
+	#carve_all_rooms(walls) # Escavar todas as salas (com autotile)
+	if debug:
+		print("Geração TileMap Concluida")
 
-func fill_entire_map_with(terrain_id: int, tile_layer : TileMapLayer) -> void:
-	var positions := []
+func fill_tilemap_with_static_tiles():
 	var full_width = map_size.x * (room_size.x + padding)
 	var full_height = map_size.y * (room_size.y + padding)
 	var center_offset = Vector2i(full_width / 2, full_height / 2)
@@ -272,24 +299,72 @@ func fill_entire_map_with(terrain_id: int, tile_layer : TileMapLayer) -> void:
 	
 	for y in full_height:
 		for x in full_width:
-			var tile_pos = Vector2i(x, y) - center_offset
-			positions.append(tile_pos)
-	tile_layer.set_cells_terrain_connect(positions, terrain_set, terrain_id, true)
+			var pos = Vector2i(x, y) - center_offset
+			ground.set_cell(pos, 1, Vector2i(4, 8)) # Tile do chão (Ground) - fixo, não autotile
+			walls.set_cell(pos, 1, Vector2i(2, 2)) # Tile da parede (Walls) - fixo, será escavado depois
 
-func carve_room(grid_pos: Vector2, tile_layer: TileMapLayer) -> void:
-	var start_tile := get_tilemap_pos(grid_pos)
-	var positions := []
+func carve_all_rooms(tile_layer: TileMapLayer):
+	var all_positions: Array[Vector2i] = []
 	
-	for y in int(room_size.y):
-		for x in int(room_size.x):
-			positions.append(start_tile + Vector2i(x, y))
-			
-	tile_layer.set_cells_terrain_connect(positions, terrain_set, TerrainType.EMPTY, true)
+	for room in rooms:
+		var start_tile = get_tilemap_pos(room.grid_pos)
+		for y in int(room_size.y):
+			for x in int(room_size.x):
+				all_positions.append(start_tile + Vector2i(x, y))
+	
+	tile_layer.set_cells_terrain_connect(all_positions, terrain_set, TerrainType.EMPTY, true)
 
 func get_tilemap_pos(grid_pos: Vector2i) -> Vector2i:
-	var tile_pos = grid_pos * (room_size + Vector2i(padding,padding))
-	return tile_pos
+	return grid_pos * (room_size + Vector2i(padding,padding))
 
+func dig_map(tile_layer: TileMapLayer) -> void:
+	var dig_positions = get_all_dig_positions()
+	var unique_positions = remove_duplicates(dig_positions)  # Remove duplicados
+	
+	tile_layer.set_cells_terrain_connect(unique_positions, terrain_set, TerrainType.EMPTY, true)
+
+func get_all_dig_positions() -> Array[Vector2i]:
+	var dig_positions: Array[Vector2i] = []
+	
+	# Adicionar posições das salas
+	for room in rooms:
+		var start := get_tilemap_pos(room.grid_pos)
+		for y in int(room_size.y):
+			for x in int(room_size.x):
+				dig_positions.append(start + Vector2i(x, y))
+	
+	# Adicionar posições dos corredores
+	var visited_pairs := {}
+	for room in rooms:
+		for neighbor in room.neighbors:
+			var key := [room, neighbor]
+			key.sort()
+			if visited_pairs.has(key):
+				continue
+			visited_pairs[key] = true
+			
+			var center_a := get_tilemap_pos(room.grid_pos) + Vector2i(room_size.x, room_size.y) / 2
+			var center_b := get_tilemap_pos(neighbor.grid_pos) + Vector2i(room_size.x, room_size.y) / 2
+			
+			if center_a.x == center_b.x:
+				var y_range := range(min(center_a.y, center_b.y), max(center_a.y, center_b.y) + 1)
+				for y in y_range:
+					dig_positions.append(Vector2i(center_a.x, y))
+					dig_positions.append(Vector2i(center_a.x - 1, y))
+					dig_positions.append(Vector2i(center_a.x - 2, y))
+					dig_positions.append(Vector2i(center_a.x + 1, y))
+			elif center_a.y == center_b.y:
+				var x_range := range(min(center_a.x, center_b.x), max(center_a.x, center_b.x) + 1)
+				for x in x_range:
+					dig_positions.append(Vector2i(x, center_a.y))
+					dig_positions.append(Vector2i(x, center_a.y - 1))
+					dig_positions.append(Vector2i(x, center_a.y - 2))
+					dig_positions.append(Vector2i(x, center_a.y + 1))
+	return dig_positions
+
+#endregion
+
+#region 🖼️ Debug: Desenhar mapa e salas
 func _draw():
 	var connection_color = Color.YELLOW
 	var room_color_default = Color.BLUE
@@ -332,8 +407,4 @@ func _draw():
 func get_room_screen_position(grid_pos: Vector2i ) -> Vector2i:
 	return grid_pos * (room_size * tile_size) + (padding * grid_pos * tile_size)
 
-func _input(event):
-	if event.is_action_pressed('ui_select'):
-		await inicialize_rooms() # Gerar Salas
-		instantiate_tilemap()
-		print('done')
+#endregion

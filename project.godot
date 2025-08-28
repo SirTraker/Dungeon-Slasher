@@ -11,7 +11,7 @@ config_version=5
 [application]
 
 config/name="Dungeon Slasher"
-run/main_scene="res://Scenes/Teste Level Generator.tscn"
+run/main_scene="res://Scenes/Main Scene.tscn"
 config/features=PackedStringArray("4.3", "GL Compatibility")
 config/icon="res://icon.svg"
 

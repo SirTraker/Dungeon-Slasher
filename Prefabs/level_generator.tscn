@@ -1,0 +1,19 @@
+[gd_scene load_steps=3 format=3 uid="uid://c8vy6ax1hqhi"]
+
+[ext_resource type="Script" path="res://Scripts/Level Generator.gd" id="1_u12gn"]
+[ext_resource type="TileSet" uid="uid://dhs3eevs66l5c" path="res://Map_TileSet.tres" id="2_t7mkq"]
+
+[node name="Level Generator" type="Node2D" node_paths=PackedStringArray("ground", "walls")]
+script = ExtResource("1_u12gn")
+ground = NodePath("Map/Ground")
+walls = NodePath("Map/Walls")
+
+[node name="Map" type="Node2D" parent="."]
+y_sort_enabled = true
+
+[node name="Ground" type="TileMapLayer" parent="Map"]
+tile_set = ExtResource("2_t7mkq")
+
+[node name="Walls" type="TileMapLayer" parent="Map"]
+y_sort_enabled = true
+tile_set = ExtResource("2_t7mkq")

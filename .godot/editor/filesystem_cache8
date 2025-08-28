@@ -1,10 +1,9 @@
 ea4bc82a6ad023ab7ee23ee620429895
-::res://::1756299670
+::res://::1756375233
 default_bus_layout.tres::AudioBusLayout::2761501548948315440::1711890120::0::1::::<><>::
 icon.svg::CompressedTexture2D::9139943685860064543::1711880832::1714588122::1::::<><>::
-Map_TileSet.tres::TileSet::7689450218486475922::1756206812::0::1::::<><>::uid://du1d3v0kpod2x::::res://Aseprite/Tileset.png
-player.tscn::PackedScene::3032049282892291187::1756239553::0::1::::<><>::res://Scripts/Player Movement.gd<>uid://dkvemky384o78::::res://Aseprite/player_spritesheet.png
-room_controller.tscn::PackedScene::893311936344583718::1756239904::0::1::::<><>::res://Scripts/RoomController.gd
+Map_TileSet.tres::TileSet::7689450218486475922::1756374731::0::1::::<><>::uid://du1d3v0kpod2x::::res://Aseprite/Tileset.png
+room_controller.tscn::PackedScene::893311936344583718::1756303202::0::1::::<><>::res://Scripts/RoomController.gd
 ::res://addons/::1753610598
 ::res://addons/console/::1750793248
 console.gd::GDScript::-1::1750793248::0::1::::<>Node<>::
@@ -25,15 +24,19 @@ Tileset.png::CompressedTexture2D::8616946040738558873::1753616475::1716149631::1
 Atlas 1.png::CompressedTexture2D::2585893155122783869::1711881383::1750792478::1::::<><>::
 Atlas 2.png::CompressedTexture2D::1636302091526333351::1711881383::1750792478::1::::<><>::
 Atlas 5.png::CompressedTexture2D::5066721985455885636::1711894235::1750792478::1::::<><>::
-::res://Scenes/::1756239943
+::res://Prefabs/::1756375233
+level_generator.tscn::PackedScene::209821698365758446::1756375185::0::1::::<><>::res://Scripts/Level Generator.gd<>uid://dhs3eevs66l5c::::res://Map_TileSet.tres
+player.tscn::PackedScene::3032049282892291187::1756303202::0::1::::<><>::res://Scripts/Player Movement.gd<>uid://dkvemky384o78::::res://Aseprite/player_spritesheet.png
+::res://Scenes/::1756375233
+Main Scene.tscn::PackedScene::1138921288371523741::1756375213::0::1::::<><>::uid://c8vy6ax1hqhi::::res://Prefabs/level_generator.tscn<>res://Scripts/CameraController.gd
+Teste Level Generator.tscn::PackedScene::145389934931290923::1756315534::0::1::::<><>::res://Scripts/Level Generator.gd<>uid://dhs3eevs66l5c::::res://Map_TileSet.tres
+Test_Scene.tscn::PackedScene::2539400867230827689::1756375233::0::1::::<><>::uid://dhs3eevs66l5c::::res://Map_TileSet.tres<>uid://bjg0n5puiqn84::::res://Prefabs/player.tscn<>uid://myyym686sfqs::::res://room_controller.tscn<>res://Scripts/CameraController.gd
+::res://Scripts/::1756374840
 CameraController.gd::GDScript::-1::1756231992::0::1::::<>Camera2D<>::
-Teste Level Generator.tscn::PackedScene::145389934931290923::1756228949::0::1::::<><>::res://Scripts/Level Generator.gd<>uid://dhs3eevs66l5c::::res://Map_TileSet.tres
-Test_Scene.tscn::PackedScene::2539400867230827689::1756239942::0::1::::<><>::uid://dhs3eevs66l5c::::res://Map_TileSet.tres<>uid://bjg0n5puiqn84::::res://player.tscn<>uid://myyym686sfqs::::res://room_controller.tscn<>res://Scenes/CameraController.gd
-::res://Scripts/::1756239875
 Level Generator Copy.gd::GDScript::-1::1751820505::0::1::::<>Node2D<>::
-Level Generator.gd::GDScript::-1::1756229095::0::1::::<>Node2D<>::
+Level Generator.gd::GDScript::-1::1756374840::0::1::::<>Node2D<>::
 Player Movement.gd::GDScript::-1::1756210199::0::1::::<>CharacterBody2D<>::
-Room.gd::GDScript::-1::1756228949::0::1::::Room<>Node2D<>::
+Room.gd::GDScript::-1::1756374768::0::1::::Room<>Node2D<>::
 RoomController.gd::GDScript::-1::1756239875::0::1::::RoomController<>Node2D<>::
 ::res://Temp Backups/::1750792419
 Level Generator Backup.gd::GDScript::-1::1750628504::0::1::::<>Node2D<>::

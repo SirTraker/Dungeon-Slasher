@@ -1,6 +1,6 @@
 extends CharacterBody2D
 
-@export var speed = 3000
+#@export var speed = 3000
 
 const SPEED = 100.0
 const ACCEL = 20.0
@@ -41,4 +41,4 @@ func _process(delta):
 			$Sprite2D.play_backwards("walking") 
 		
 	#$"../CanvasLayer/Control/RichTextLabel".text = str("Player Pos: ", player_pos,"\nMouse Pos: ", mouse_pos)
-	$"../CanvasLayer/Control/RichTextLabel".text = str("Velocity: ", velocity)
+	#$"../CanvasLayer/Control/RichTextLabel".text = str("Velocity: ",  velocity)

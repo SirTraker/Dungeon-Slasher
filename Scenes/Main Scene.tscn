@@ -1,5 +1,21 @@
-[gd_scene format=3 uid="uid://qhx4qrivwyhp"]
+[gd_scene load_steps=5 format=3 uid="uid://qhx4qrivwyhp"]
+
+[ext_resource type="PackedScene" uid="uid://c8vy6ax1hqhi" path="res://Prefabs/level_generator.tscn" id="1_5c4jd"]
+[ext_resource type="Script" path="res://Scenes/GameManager.gd" id="2_inpos"]
+[ext_resource type="Script" path="res://Scripts/CameraController.gd" id="2_pu3fn"]
+[ext_resource type="PackedScene" uid="uid://bjg0n5puiqn84" path="res://Prefabs/player.tscn" id="3_dnwql"]
 
 [node name="Main Scene" type="Node2D"]
 
-[node name="GameManager" type="Node2D" parent="."]
+[node name="Level Generator" parent="." instance=ExtResource("1_5c4jd")]
+
+[node name="GameManager" type="Node2D" parent="." node_paths=PackedStringArray("level_generator", "camera")]
+y_sort_enabled = true
+script = ExtResource("2_inpos")
+level_generator = NodePath("../Level Generator")
+player_scene = ExtResource("3_dnwql")
+camera = NodePath("../Camera2D")
+
+[node name="Camera2D" type="Camera2D" parent="."]
+zoom = Vector2(3, 3)
+script = ExtResource("2_pu3fn")

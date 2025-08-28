@@ -1,4 +1,5 @@
 extends Node2D
+class_name LevelGenerator
 
 # ──────────────── CONFIGURAÇÃO ────────────────
 @export_group("Debug")
@@ -11,6 +12,10 @@ extends Node2D
 @export var number_rooms = 5
 @export var room_size = Vector2i(24, 16)
 
+@export_group("TileMap Layers")
+@export var ground: TileMapLayer
+@export var walls: TileMapLayer
+
 # ──────────────── CONSTANTES ────────────────
 const DIRECTIONS = [Vector2.UP, Vector2.DOWN, Vector2.LEFT, Vector2.RIGHT]
 
@@ -21,27 +26,23 @@ enum TerrainType {
 }
 
 # ──────────────── VARIÁVEIS ────────────────
-var ground: TileMapLayer
-var walls: TileMapLayer
-
 var grid_size = Vector2()
 var rooms: Array[Room] = []
 var taken_positions: Array[Vector2] = []
 
 var tile_size = 16
 
+var entry_room : Room
+var exit_room : Room
 
 #region ▶ Ciclo Principal
 func _ready():
-	ground= $Map/Ground
-	walls= $Map/Walls
-	
 	# Garantir que o número de salas não excede a grelha
 	number_rooms = min(number_rooms, map_size.x * map_size.y - 1)
 	grid_size = map_size / 2
 	
-	await generate_rooms() # Gerar Salas
-	instantiate_tilemap()
+	#await generate_rooms() # Gerar Salas
+	#instantiate_tilemap()
 
 func _input(event):
 	if event.is_action_pressed('Generate Map'):
@@ -49,6 +50,12 @@ func _input(event):
 		ground.clear()
 		await generate_rooms() # Gerar Salas
 		instantiate_tilemap()
+
+func generate_level():
+	walls.clear()
+	ground.clear()
+	await generate_rooms()
+	instantiate_tilemap()
 #endregion
 
 #region 🧱 Geração de salas
@@ -65,7 +72,7 @@ func generate_rooms():
 		)
 		
 		var start_room = Room.new()
-		start_room.make_room(start_pos,room_size * tile_size, 0)
+		start_room.make_room(start_pos,room_size * 16, 0)
 		rooms.append(start_room)
 		taken_positions.append(start_pos)
 		
@@ -99,7 +106,7 @@ func create_rooms():
 		
 		# Criar e armazenar a nova sala
 		var new_room = Room.new()
-		new_room.make_room(new_pos,0,base_pos)
+		new_room.make_room(new_pos,room_size * 16,0,base_pos)
 		rooms.append(new_room)
 		taken_positions.insert(0, new_pos)
 		
@@ -129,8 +136,8 @@ func assign_entry_and_exit_rooms() -> bool:
 	
 	# Seleciona as duas pontas mais distantes entre si
 	var max_distance = 0.0
-	var entry_room = candidate_rooms[0]
-	var exit_room = candidate_rooms[1]
+	var _entry_room = candidate_rooms[0]
+	var _exit_room = candidate_rooms[1]
 	
 	for i in candidate_rooms.size():
 		for j in candidate_rooms.size():
@@ -138,32 +145,35 @@ func assign_entry_and_exit_rooms() -> bool:
 			var dist = candidate_rooms[i].grid_pos.distance_to(candidate_rooms[j].grid_pos)
 			if dist > max_distance:
 				max_distance = dist
-				entry_room = candidate_rooms[i]
-				exit_room = candidate_rooms[j]
+				_entry_room = candidate_rooms[i]
+				_exit_room = candidate_rooms[j]
 	
-	if number_of_neighbors(entry_room.grid_pos) == 2:
+	if number_of_neighbors(_entry_room.grid_pos) == 2:
 		var shuffle_dir = DIRECTIONS.duplicate()
 		shuffle_dir.shuffle()
 		for dir in shuffle_dir:
-			var neighbor_pos = entry_room.grid_pos + dir
-			if entry_room.get_door(dir):
-				disconnect_rooms(entry_room.grid_pos, neighbor_pos)
+			var neighbor_pos = _entry_room.grid_pos + dir
+			if _entry_room.get_door(dir):
+				disconnect_rooms(_entry_room.grid_pos, neighbor_pos)
 				break
-	if number_of_neighbors(exit_room.grid_pos) == 2:
+	if number_of_neighbors(_exit_room.grid_pos) == 2:
 		var shuffle_dir = []
 		shuffle_dir.append_array(DIRECTIONS)
 		shuffle_dir.shuffle()
 		for dir in shuffle_dir:
-			var neighbor_pos = exit_room.grid_pos + dir
-			if exit_room.get_door(dir):
-				disconnect_rooms(exit_room.grid_pos, neighbor_pos)
+			var neighbor_pos = _exit_room.grid_pos + dir
+			if _exit_room.get_door(dir):
+				disconnect_rooms(_exit_room.grid_pos, neighbor_pos)
 				break
 	
 	for room in rooms:
-		if room == entry_room:
+		if room == _entry_room:
 			room.type = 1  # Entrada (verde)
-		elif room == exit_room:
+		elif room == _exit_room:
 			room.type = 2   # Saída (vermelha)
+	
+	entry_room = _entry_room
+	exit_room = _exit_room
 	
 	return true
 
@@ -278,6 +288,12 @@ func remove_duplicates(array: Array) -> Array:
 			seen[value] = true
 			result.append(value)
 	return result
+
+func get_entry_room() -> Room:
+	return entry_room
+
+func get_exit_room() -> Room:
+	return exit_room
 
 #endregion
 

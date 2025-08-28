@@ -1,2 +1,9 @@
-res://Map_TileSet.tres
 res://Scenes/Main Scene.tscn
+res://Map_TileSet.tres
+res://Scripts/Level Generator.gd
+res://Scripts/Room.gd
+res://Prefabs/level_generator.tscn
+res://Scenes/GameManager.gd
+res://Scripts/Player Movement.gd
+res://Scenes/Test_Scene.tscn
+res://Prefabs/player.tscn

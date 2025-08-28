@@ -19,6 +19,11 @@ func make_room(_pos: Vector2, _room_size: Vector2, _type: int = type, _previous_
 	type = _type
 	previous_room_pos = _previous_room_pos
 
+func make_room1(_pos: Vector2, _type: int = type, _previous_room_pos: Vector2 = previous_room_pos) -> void:
+	grid_pos = _pos
+	type = _type
+	previous_room_pos = _previous_room_pos
+	
 func get_door(direction):
 	if direction == Vector2.UP:
 		return door_top

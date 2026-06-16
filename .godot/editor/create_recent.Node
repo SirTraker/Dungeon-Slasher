@@ -1,6 +1,10 @@
-Camera2D
-Node2D
+CharacterBody2D
 CollisionShape2D
+Sprite2D
+InputComponent
+MovementComponent
+Node2D
+Camera2D
 Area2D
 Node
 RichTextLabel
@@ -8,7 +12,4 @@ Control
 CanvasLayer
 Container
 TileMap
-Sprite2D
 AnimatedSprite2D
-CharacterBody2D
-TileMapLayer

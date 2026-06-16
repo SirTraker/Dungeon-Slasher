@@ -8,21 +8,41 @@
 
 config_version=5
 
+[animation]
+
+compatibility/default_parent_skeleton_in_mesh_instance_3d=true
+
 [application]
 
 config/name="Dungeon Slasher"
 run/main_scene="res://Scenes/Main Scene.tscn"
-config/features=PackedStringArray("4.3", "GL Compatibility")
+config/features=PackedStringArray("4.6", "GL Compatibility")
 config/icon="res://icon.svg"
 
 [autoload]
 
-Console="*res://addons/console/console.gd"
+Console="*uid://ouiu5xh1cs8n"
 DebugCam="*res://addons/debug_camera/scripts/DebugCamAutoload.gd"
+
+[display]
+
+window/size/viewport_width=640
+window/size/viewport_height=360
+window/size/always_on_top=true
+window/size/window_width_override=1920
+window/size/window_height_override=1080
+window/stretch/mode="canvas_items"
+window/stretch/scale_mode="integer"
 
 [editor_plugins]
 
 enabled=PackedStringArray("res://addons/console/plugin.cfg", "res://addons/debug_camera/plugin.cfg")
+
+[file_customization]
+
+folder_colors={
+"res://Old Game Files/": "gray"
+}
 
 [global_group]
 
@@ -68,5 +88,3 @@ Attack={
 [rendering]
 
 textures/canvas_textures/default_texture_filter=0
-renderer/rendering_method="gl_compatibility"
-renderer/rendering_method.mobile="gl_compatibility"

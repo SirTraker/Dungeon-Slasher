@@ -1,21 +1,27 @@
-[gd_scene load_steps=5 format=3 uid="uid://qhx4qrivwyhp"]
+[gd_scene format=3 uid="uid://qhx4qrivwyhp"]
 
 [ext_resource type="PackedScene" uid="uid://c8vy6ax1hqhi" path="res://Prefabs/level_generator.tscn" id="1_5c4jd"]
-[ext_resource type="Script" path="res://Scenes/GameManager.gd" id="2_inpos"]
-[ext_resource type="Script" path="res://Scripts/CameraController.gd" id="2_pu3fn"]
+[ext_resource type="PackedScene" uid="uid://myyym686sfqs" path="res://Prefabs/room_controller.tscn" id="2_bjena"]
+[ext_resource type="Script" uid="uid://cj4pjvruqihw2" path="res://Scripts/GameManager.gd" id="2_inpos"]
+[ext_resource type="Script" uid="uid://umkyfson28m3" path="res://Scripts/CameraController.gd" id="2_pu3fn"]
 [ext_resource type="PackedScene" uid="uid://bjg0n5puiqn84" path="res://Prefabs/player.tscn" id="3_dnwql"]
 
-[node name="Main Scene" type="Node2D"]
+[node name="Main Scene" type="Node2D" unique_id=1338645873]
+y_sort_enabled = true
 
-[node name="Level Generator" parent="." instance=ExtResource("1_5c4jd")]
+[node name="Level Generator" parent="." unique_id=367171244 instance=ExtResource("1_5c4jd")]
+y_sort_enabled = true
+number_rooms = 15
+room_controller_scene = ExtResource("2_bjena")
 
-[node name="GameManager" type="Node2D" parent="." node_paths=PackedStringArray("level_generator", "camera")]
+[node name="GameManager" type="Node2D" parent="." unique_id=565262283 node_paths=PackedStringArray("level_generator", "camera")]
 y_sort_enabled = true
 script = ExtResource("2_inpos")
 level_generator = NodePath("../Level Generator")
 player_scene = ExtResource("3_dnwql")
 camera = NodePath("../Camera2D")
 
-[node name="Camera2D" type="Camera2D" parent="."]
-zoom = Vector2(3, 3)
+[node name="Camera2D" type="Camera2D" parent="." unique_id=980826662]
+process_callback = 0
+position_smoothing_enabled = true
 script = ExtResource("2_pu3fn")

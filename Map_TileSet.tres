@@ -1,4 +1,4 @@
-[gd_resource type="TileSet" load_steps=3 format=3 uid="uid://dhs3eevs66l5c"]
+[gd_resource type="TileSet" format=3 uid="uid://dhs3eevs66l5c"]
 
 [ext_resource type="Texture2D" uid="uid://du1d3v0kpod2x" path="res://Aseprite/Tileset.png" id="1_oj4e1"]
 

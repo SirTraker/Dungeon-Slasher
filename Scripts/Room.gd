@@ -4,7 +4,15 @@ class_name Room
 var previous_room_pos : Vector2 = Vector2.INF
 var neighbors : Array = []
 
+enum RoomTypes {
+	Combat = 0,
+	Entry = 1,
+	Exit = 2,
+	Shop = 3
+}
+
 @export var grid_pos : Vector2
+@export var screen_pos : Vector2
 @export var room_size : Vector2
 @export var type : int = 0
 @export_group('Doors')
@@ -13,8 +21,9 @@ var neighbors : Array = []
 @export var door_left : bool
 @export var door_right : bool
 
-func make_room(_pos: Vector2, _room_size: Vector2, _type: int = type, _previous_room_pos: Vector2 = previous_room_pos) -> void:
+func make_room(_pos: Vector2, _screen_pos : Vector2, _room_size: Vector2, _type: int = type, _previous_room_pos: Vector2 = previous_room_pos) -> void:
 	grid_pos = _pos
+	screen_pos = _screen_pos
 	room_size = _room_size
 	type = _type
 	previous_room_pos = _previous_room_pos

@@ -11,6 +11,7 @@ class_name LevelGenerator
 @export var padding = 10
 @export var number_rooms = 5
 @export var room_size = Vector2i(24, 16)
+@export var room_controller_scene: PackedScene
 
 @export_group("TileMap Layers")
 @export var ground: TileMapLayer
@@ -35,6 +36,8 @@ var tile_size = 16
 var entry_room : Room
 var exit_room : Room
 
+var room_controllers: Array[RoomController] = []
+
 #region ▶ Ciclo Principal
 func _ready():
 	# Garantir que o número de salas não excede a grelha
@@ -50,12 +53,15 @@ func _input(event):
 		ground.clear()
 		await generate_rooms() # Gerar Salas
 		instantiate_tilemap()
+		
+		
 
 func generate_level():
 	walls.clear()
 	ground.clear()
 	await generate_rooms()
 	instantiate_tilemap()
+	instantiate_rooms()
 #endregion
 
 #region 🧱 Geração de salas
@@ -72,7 +78,7 @@ func generate_rooms():
 		)
 		
 		var start_room = Room.new()
-		start_room.make_room(start_pos,room_size * 16, 0)
+		start_room.make_room(start_pos, get_room_screen_position(start_pos),room_size * 16, 0)
 		rooms.append(start_room)
 		taken_positions.append(start_pos)
 		
@@ -106,7 +112,7 @@ func create_rooms():
 		
 		# Criar e armazenar a nova sala
 		var new_room = Room.new()
-		new_room.make_room(new_pos,room_size * 16,0,base_pos)
+		new_room.make_room(new_pos,get_room_screen_position(new_pos),room_size * 16,0,base_pos)
 		rooms.append(new_room)
 		taken_positions.insert(0, new_pos)
 		
@@ -211,6 +217,13 @@ func find_new_position(base_pos : Vector2, require_single_neighbor := false) -> 
 		return new_pos
 	
 	return Vector2.INF  # sem posição válida encontrada
+
+func instantiate_rooms():
+	for room in rooms:
+		var instance : RoomController = room_controller_scene.instantiate()
+		instance.room = room
+		$Rooms.add_child(instance)
+
 #endregion
 
 #region 🔗 Conexões entre salas

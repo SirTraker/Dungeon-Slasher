@@ -5,15 +5,17 @@
 
 [node name="Level Generator" type="Node2D" node_paths=PackedStringArray("ground", "walls")]
 script = ExtResource("1_u12gn")
-ground = NodePath("Map/Ground")
-walls = NodePath("Map/Walls")
+ground = NodePath("TileMap/Ground")
+walls = NodePath("TileMap/Walls")
 
-[node name="Map" type="Node2D" parent="."]
+[node name="TileMap" type="Node2D" parent="."]
 y_sort_enabled = true
 
-[node name="Ground" type="TileMapLayer" parent="Map"]
+[node name="Ground" type="TileMapLayer" parent="TileMap"]
 tile_set = ExtResource("2_t7mkq")
 
-[node name="Walls" type="TileMapLayer" parent="Map"]
+[node name="Walls" type="TileMapLayer" parent="TileMap"]
 y_sort_enabled = true
 tile_set = ExtResource("2_t7mkq")
+
+[node name="Rooms" type="Node2D" parent="."]

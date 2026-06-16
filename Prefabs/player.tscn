@@ -1,7 +1,10 @@
-[gd_scene load_steps=13 format=3 uid="uid://bjg0n5puiqn84"]
+[gd_scene format=3 uid="uid://bjg0n5puiqn84"]
 
-[ext_resource type="Script" path="res://Scripts/Player Movement.gd" id="1_42sab"]
+[ext_resource type="Script" uid="uid://kvdwy8l4xr71" path="res://Scripts/Player.gd" id="1_42sab"]
 [ext_resource type="Texture2D" uid="uid://dkvemky384o78" path="res://Aseprite/player_spritesheet.png" id="2_qqpji"]
+[ext_resource type="Texture2D" uid="uid://cxf4vyp1pmfem" path="res://Aseprite/wearpons.png" id="3_3dp6x"]
+[ext_resource type="Script" uid="uid://ydtqylxwjxhe" path="res://Scripts/Components/MovementComponent.gd" id="4_2nftw"]
+[ext_resource type="Script" uid="uid://dqacsehs311l5" path="res://Scripts/Components/InputComponent.gd" id="4_knrd4"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_oa4no"]
 atlas = ExtResource("2_qqpji")
@@ -75,17 +78,40 @@ animations = [{
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_upf6g"]
 size = Vector2(10, 7)
 
-[node name="Player" type="CharacterBody2D"]
+[sub_resource type="AtlasTexture" id="AtlasTexture_w3w62"]
+atlas = ExtResource("3_3dp6x")
+region = Rect2(19, 42, 10, 21)
+
+[node name="Player" type="CharacterBody2D" unique_id=1424757072 groups=["Player"]]
 z_index = 1
 y_sort_enabled = true
+motion_mode = 1
 script = ExtResource("1_42sab")
 
-[node name="Sprite2D" type="AnimatedSprite2D" parent="."]
+[node name="Sprite2D" type="AnimatedSprite2D" parent="." unique_id=527970631]
 position = Vector2(0, -8)
 sprite_frames = SubResource("SpriteFrames_x50od")
 animation = &"walking"
 autoplay = "idle"
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1379606232]
 position = Vector2(0, 4.5)
 shape = SubResource("RectangleShape2D_upf6g")
+
+[node name="wearpon" type="Sprite2D" parent="." unique_id=1983212709]
+visible = false
+position = Vector2(-5, -4)
+scale = Vector2(0.75, 0.75)
+texture = SubResource("AtlasTexture_w3w62")
+
+[node name="InputComponent" type="Node" parent="." unique_id=455114157]
+unique_name_in_owner = true
+script = ExtResource("4_knrd4")
+metadata/_custom_type_script = "uid://dqacsehs311l5"
+
+[node name="MovementComponent" type="Node" parent="." unique_id=39956769 node_paths=PackedStringArray("body", "sprite")]
+unique_name_in_owner = true
+script = ExtResource("4_2nftw")
+body = NodePath("..")
+sprite = NodePath("../Sprite2D")
+metadata/_custom_type_script = "uid://ydtqylxwjxhe"

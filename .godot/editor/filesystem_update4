@@ -1,9 +1,8 @@
-res://Scenes/Main Scene.tscn
-res://Map_TileSet.tres
-res://Scripts/Level Generator.gd
-res://Scripts/Room.gd
-res://Prefabs/level_generator.tscn
-res://Scenes/GameManager.gd
-res://Scripts/Player Movement.gd
-res://Scenes/Test_Scene.tscn
 res://Prefabs/player.tscn
+res://Map_TileSet.tres
+res://Scripts/Components/MovementComponent.gd
+res://Scripts/Player.gd
+res://Scripts/RoomController.gd
+res://Scripts/Level Generator.gd
+res://Scripts/Components/InputComponent.gd
+res://ProjectProgress.md

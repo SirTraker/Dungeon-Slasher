@@ -1,16 +1,24 @@
 extends Camera2D
+class_name CameraController
 
 @export var target: Node2D
-var lock_to_room: bool = false
+var locked_to_room: bool = false
 var room_center: Vector2
 var room_size: Vector2
 
-func _process(delta):
-	if lock_to_room:
-		# Fixa a câmera no centro da sala
-		global_position = room_center
-		# (podes opcionalmente limitar com offset/zoom usando room_size)
+func _process(delta: float) -> void:
+	if locked_to_room:
+		global_position = room_center # Fixa a câmera no centro da sala
 	else:
-		# Segue o jogador normalmente
-		if target:
+		if target: # Segue o jogador normalmente
 			global_position = target.global_position
+
+func lock_to_room(room: Node2D) -> void:
+	# Supomos que o "room" é um RoomController
+	if room is RoomController:
+		locked_to_room = true
+		room_center = room.global_position + Vector2(0,-8)
+		room_size = room.room.room_size
+		
+func unlock() -> void:
+	locked_to_room = false

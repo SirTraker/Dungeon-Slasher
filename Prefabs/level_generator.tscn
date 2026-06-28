@@ -1,21 +1,21 @@
-[gd_scene load_steps=3 format=3 uid="uid://c8vy6ax1hqhi"]
+[gd_scene format=3 uid="uid://c8vy6ax1hqhi"]
 
-[ext_resource type="Script" path="res://Scripts/Level Generator.gd" id="1_u12gn"]
+[ext_resource type="Script" uid="uid://cdexh41fb7458" path="res://Scripts/Level Generator.gd" id="1_u12gn"]
 [ext_resource type="TileSet" uid="uid://dhs3eevs66l5c" path="res://Map_TileSet.tres" id="2_t7mkq"]
 
-[node name="Level Generator" type="Node2D" node_paths=PackedStringArray("ground", "walls")]
+[node name="Level Generator" type="Node2D" unique_id=1419340042 node_paths=PackedStringArray("ground", "walls")]
 script = ExtResource("1_u12gn")
 ground = NodePath("TileMap/Ground")
 walls = NodePath("TileMap/Walls")
 
-[node name="TileMap" type="Node2D" parent="."]
+[node name="TileMap" type="Node2D" parent="." unique_id=1292539021]
 y_sort_enabled = true
 
-[node name="Ground" type="TileMapLayer" parent="TileMap"]
+[node name="Ground" type="TileMapLayer" parent="TileMap" unique_id=538817634]
 tile_set = ExtResource("2_t7mkq")
 
-[node name="Walls" type="TileMapLayer" parent="TileMap"]
+[node name="Walls" type="TileMapLayer" parent="TileMap" unique_id=1068605822]
 y_sort_enabled = true
 tile_set = ExtResource("2_t7mkq")
 
-[node name="Rooms" type="Node2D" parent="."]
+[node name="Rooms" type="Node2D" parent="." unique_id=1486239459]

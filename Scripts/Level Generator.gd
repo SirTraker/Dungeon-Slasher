@@ -27,7 +27,7 @@ enum TerrainType {
 }
 
 # ──────────────── VARIÁVEIS ────────────────
-var grid_size = Vector2()
+var grid_size = Vector2i()
 var rooms: Array[Room] = []
 var taken_positions: Array[Vector2] = []
 

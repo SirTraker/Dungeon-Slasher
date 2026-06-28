@@ -2,9 +2,11 @@
 
 [ext_resource type="Script" uid="uid://kvdwy8l4xr71" path="res://Scripts/Player.gd" id="1_42sab"]
 [ext_resource type="Texture2D" uid="uid://dkvemky384o78" path="res://Aseprite/player_spritesheet.png" id="2_qqpji"]
-[ext_resource type="Texture2D" uid="uid://cxf4vyp1pmfem" path="res://Aseprite/wearpons.png" id="3_3dp6x"]
 [ext_resource type="Script" uid="uid://ydtqylxwjxhe" path="res://Scripts/Components/MovementComponent.gd" id="4_2nftw"]
 [ext_resource type="Script" uid="uid://dqacsehs311l5" path="res://Scripts/Components/InputComponent.gd" id="4_knrd4"]
+[ext_resource type="Script" uid="uid://bb3310varjcxi" path="res://Scripts/Components/HealthComponent.gd" id="6_hck1p"]
+[ext_resource type="PackedScene" uid="uid://bb4n6m30p10ih" path="res://Prefabs/sword.tscn" id="7_4qbli"]
+[ext_resource type="Script" uid="uid://dhjeaiul4ucdc" path="res://Scripts/Components/HurtboxComponent.gd" id="7_juxdh"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_oa4no"]
 atlas = ExtResource("2_qqpji")
@@ -78,31 +80,24 @@ animations = [{
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_upf6g"]
 size = Vector2(10, 7)
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_w3w62"]
-atlas = ExtResource("3_3dp6x")
-region = Rect2(19, 42, 10, 21)
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_4qbli"]
+size = Vector2(10, 16)
 
 [node name="Player" type="CharacterBody2D" unique_id=1424757072 groups=["Player"]]
 z_index = 1
-y_sort_enabled = true
 motion_mode = 1
 script = ExtResource("1_42sab")
 
 [node name="Sprite2D" type="AnimatedSprite2D" parent="." unique_id=527970631]
 position = Vector2(0, -8)
 sprite_frames = SubResource("SpriteFrames_x50od")
-animation = &"walking"
+animation = &"idle"
 autoplay = "idle"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1379606232]
+visible = false
 position = Vector2(0, 4.5)
 shape = SubResource("RectangleShape2D_upf6g")
-
-[node name="wearpon" type="Sprite2D" parent="." unique_id=1983212709]
-visible = false
-position = Vector2(-5, -4)
-scale = Vector2(0.75, 0.75)
-texture = SubResource("AtlasTexture_w3w62")
 
 [node name="InputComponent" type="Node" parent="." unique_id=455114157]
 unique_name_in_owner = true
@@ -115,3 +110,31 @@ script = ExtResource("4_2nftw")
 body = NodePath("..")
 sprite = NodePath("../Sprite2D")
 metadata/_custom_type_script = "uid://ydtqylxwjxhe"
+
+[node name="HealthComponent" type="Node" parent="." unique_id=1024666888]
+unique_name_in_owner = true
+script = ExtResource("6_hck1p")
+metadata/_custom_type_script = "uid://bb3310varjcxi"
+
+[node name="HurtboxComponent" type="Area2D" parent="." unique_id=68152869 node_paths=PackedStringArray("health_component")]
+unique_name_in_owner = true
+script = ExtResource("7_juxdh")
+health_component = NodePath("../HealthComponent")
+metadata/_custom_type_script = "uid://dhjeaiul4ucdc"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="HurtboxComponent" unique_id=1626848455]
+position = Vector2(0, -0.5)
+shape = SubResource("RectangleShape2D_4qbli")
+
+[node name="WearponSword" parent="." unique_id=939064701 instance=ExtResource("7_4qbli")]
+
+[node name="Sprite2D" parent="WearponSword" index="0" unique_id=1223127268]
+y_sort_enabled = true
+
+[node name="AnimationPlayer" parent="WearponSword" index="1" unique_id=575345025]
+autoplay = &"swing"
+
+[connection signal="died" from="HealthComponent" to="." method="_on_health_component_died"]
+[connection signal="health_changed" from="HealthComponent" to="." method="_on_health_component_health_changed"]
+
+[editable path="WearponSword"]

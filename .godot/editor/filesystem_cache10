@@ -2,7 +2,8 @@
 ::res://::1757631982
 default_bus_layout.tres::AudioBusLayout::2761501548948315440::1711890122::0::1::::<><><>0<>0<><>::
 icon.svg::CompressedTexture2D::9139943685860064543::1711880834::1768262496::1::::<><><>0<>0<>2bb1f4152aa43fff10aa56ca8cbddde8<>res://.godot/imported/icon.svg-218a8f2b3041327d8a5756f3a245f83b.ctex::
-Map_TileSet.tres::TileSet::7689450218486475922::1781462174::0::1::::<><><>0<>0<><>::uid://du1d3v0kpod2x::::res://Aseprite/Tileset.png
+Map_TileSet.tres::TileSet::7689450218486475922::1782519678::0::1::::<><><>0<>0<><>::uid://du1d3v0kpod2x::::res://Aseprite/Tileset.png
+ProjectProgress.md::TextFile::-1::1781960158::0::1::::<><><>0<>0<><>::
 ::res://addons/::1753610600
 ::res://addons/console/::1750793250
 console.gd::GDScript::1024454429417777671::1750793250::0::1::::<>Node<><>0<>0<><>::
@@ -16,6 +17,26 @@ DebugCamAutoload.gd::GDScript::1909124078579256149::1753610600::0::1::::<>Node<>
 DebugCamera2D.gd::GDScript::6205345583056178339::1753646552::0::1::::DebugCamera2D<>Camera2D<><>0<>0<><>::
 DebugCamera3D.gd::GDScript::8029566680981623463::1753610600::0::1::::DebugCamera3D<>Camera3D<><>0<>0<><>::
 plugin.gd::GDScript::5649676584256826521::1753610600::0::1::::<>EditorPlugin<><>0<>1<><>::
+::res://addons/Todo_Manager/::1782069356
+ColourPicker.gd::GDScript::7423189413155139485::1782069358::0::1::::<>HBoxContainer<><>0<>1<><>::
+Current.gd::GDScript::8272394960458563341::1782069358::0::1::::<>Control<><>0<>1<><>::
+Dock.gd::GDScript::6049340484349524101::1782069358::0::1::::<>Control<><>0<>1<><>::
+PatternEdit.gd::GDScript::2706809576279000064::1782069358::0::1::::<>PanelContainer<><>0<>1<><>::
+plugin.cfg::TextFile::-1::1782069358::0::1::::<><><>0<>0<><>::
+plugin.gd::GDScript::5219353738924224943::1782069358::0::1::::<>EditorPlugin<><>0<>1<><>::
+Project.gd::GDScript::3348460405673864794::1782069358::0::1::::<>Control<><>0<>1<><>::
+todo.cfg::TextFile::-1::1782528262::0::1::::<><><>0<>0<><>::
+todoItem_class.gd::GDScript::1685429052206527426::1782069358::0::1::::<>RefCounted<><>0<>1<><>::
+todo_class.gd::GDScript::6294551047687995997::1782069358::0::1::::<>RefCounted<><>0<>1<><>::
+::res://addons/Todo_Manager/UI/::1782069357
+ColourPicker.tscn::PackedScene::2957809393656723737::1782069358::0::1::::<><><>0<>0<><>::uid://dd033y6smf6jh::::res://addons/Todo_Manager/ColourPicker.gd
+Dock.tscn::PackedScene::4584442902745049483::1782069358::0::1::::<><><>0<>0<><>::uid://csgl0vtsudgxh::::res://addons/Todo_Manager/Dock.gd<>uid://bnyawhvwojm5g::::res://addons/Todo_Manager/Project.gd<>uid://dp4hevwsquax6::::res://addons/Todo_Manager/Current.gd
+FlatToggleButton.tres::Theme::5347568907374685615::1782069358::0::1::::<><><>0<>0<><>::
+PathEdit.gd::GDScript::1068277941844667704::1782069358::0::1::::<>PanelContainer<><>0<>1<><>::
+PathEdit.tscn::PackedScene::6012815993594119768::1782069358::0::1::::<><><>0<>0<><>::uid://phqm8fm8s3om::::res://addons/Todo_Manager/UI/PathEdit.gd<>uid://coyt1i52yehl7::::res://addons/Todo_Manager/UI/PatternContainer.tres
+PatternContainer.tres::StyleBoxFlat::5806230765710108082::1782069358::0::1::::<><><>0<>0<><>::
+PatternEdit.tscn::PackedScene::4056048923411208166::1782069358::0::1::::<><><>0<>0<><>::uid://betg01sk02eyy::::res://addons/Todo_Manager/PatternEdit.gd<>uid://coyt1i52yehl7::::res://addons/Todo_Manager/UI/PatternContainer.tres
+ToggleButton.tscn::PackedScene::3562221813869083809::1782069358::0::1::::<><><>0<>0<><>::
 ::res://Aseprite/::1756819374
 player_spritesheet.png::CompressedTexture2D::7904767281419062417::1756819172::1770156446::1::::<><><>0<>0<>edb1daeff24afa86396170ef33b35616<>res://.godot/imported/player_spritesheet.png-09cd8a74b379e57c3388a0a9573adce5.ctex::
 Tileset.png::CompressedTexture2D::8616946040738558873::1753616476::1770156498::1::::<><><>0<>0<>a5e871fa1ed630e65fcd8db0b3a8f05e<>res://.godot/imported/Tileset.png-6c33cbb2ef7a22fc58a08f1fe360de85.ctex::
@@ -25,22 +46,28 @@ Atlas 1.png::CompressedTexture2D::2585893155122783869::1711881384::1768262496::1
 Atlas 2.png::CompressedTexture2D::1636302091526333351::1711881384::1768262496::1::::<><><>0<>0<>e1e20a37db7b9e01287565983330358a<>res://.godot/imported/Atlas 2.png-efb4d459071ab47ecf010843992fc6ae.ctex::
 Atlas 5.png::CompressedTexture2D::5066721985455885636::1711894236::1768262496::1::::<><><>0<>0<>a77d618b8f28d7b43afc5d9c73367931<>res://.godot/imported/Atlas 5.png-2dd267f11c002d1833a065e378271716.ctex::
 ::res://Prefabs/::1757632028
-level_generator.tscn::PackedScene::209821698365758446::1756416180::0::1::::<><><>0<>0<><>::res://Scripts/Level Generator.gd<>uid://dhs3eevs66l5c::::res://Map_TileSet.tres
-player.tscn::PackedScene::3032049282892291187::1781479210::0::1::::<><><>0<>0<><>::uid://kvdwy8l4xr71::::res://Scripts/Player.gd<>uid://dkvemky384o78::::res://Aseprite/player_spritesheet.png<>uid://cxf4vyp1pmfem::::res://Aseprite/wearpons.png<>uid://ydtqylxwjxhe::::res://Scripts/Components/MovementComponent.gd<>uid://dqacsehs311l5::::res://Scripts/Components/InputComponent.gd
+level_generator.tscn::PackedScene::209821698365758446::1782519678::0::1::::<><><>0<>0<><>::uid://cdexh41fb7458::::res://Scripts/Level Generator.gd<>uid://dhs3eevs66l5c::::res://Map_TileSet.tres
+player.tscn::PackedScene::3032049282892291187::1782519312::0::1::::<><><>0<>0<><>::uid://kvdwy8l4xr71::::res://Scripts/Player.gd<>uid://dkvemky384o78::::res://Aseprite/player_spritesheet.png<>uid://ydtqylxwjxhe::::res://Scripts/Components/MovementComponent.gd<>uid://dqacsehs311l5::::res://Scripts/Components/InputComponent.gd<>uid://bb3310varjcxi::::res://Scripts/Components/HealthComponent.gd<>uid://bb4n6m30p10ih::::res://Prefabs/sword.tscn<>uid://dhjeaiul4ucdc::::res://Scripts/Components/HurtboxComponent.gd
+PlayerCamera.tscn::PackedScene::1829278252751678345::1782067904::0::1::::<><><>0<>0<><>::uid://umkyfson28m3::::res://Scripts/CameraController.gd
 room_controller.tscn::PackedScene::893311936344583718::1756412446::0::1::::<><><>0<>0<><>::res://Scripts/RoomController.gd
+Sword.gd::GDScript::5661739888954279139::1782427028::0::1::::<>Node2D<><>0<>0<><>::
+sword.tscn::PackedScene::2517321837407589851::1782519424::0::1::::<><><>0<>0<><>::uid://cxf4vyp1pmfem::::res://Aseprite/wearpons.png<>uid://cmwua8jgppcdn::::res://Prefabs/Sword.gd
 ::res://Scenes/::1757632028
-Main Scene.tscn::PackedScene::1138921288371523741::1781476674::0::1::::<><><>0<>0<><>::uid://c8vy6ax1hqhi::::res://Prefabs/level_generator.tscn<>uid://myyym686sfqs::::res://Prefabs/room_controller.tscn<>uid://cj4pjvruqihw2::::res://Scripts/GameManager.gd<>uid://umkyfson28m3::::res://Scripts/CameraController.gd<>uid://bjg0n5puiqn84::::res://Prefabs/player.tscn
+Main Scene.tscn::PackedScene::1138921288371523741::1782083126::0::1::::<><><>0<>0<><>::uid://c8vy6ax1hqhi::::res://Prefabs/level_generator.tscn<>uid://myyym686sfqs::::res://Prefabs/room_controller.tscn<>uid://cj4pjvruqihw2::::res://Scripts/GameManager.gd<>uid://bjg0n5puiqn84::::res://Prefabs/player.tscn<>uid://1cd7fcmo4x4l::::res://Prefabs/PlayerCamera.tscn
 Teste Level Generator.tscn::PackedScene::145389934931290923::1756315536::0::1::::<><><>0<>0<><>::res://Scripts/Level Generator.gd<>uid://dhs3eevs66l5c::::res://Map_TileSet.tres
-Test_Scene.tscn::PackedScene::2539400867230827689::1768262958::0::1::::<><><>0<>0<><>::uid://dhs3eevs66l5c::::res://Map_TileSet.tres<>uid://bjg0n5puiqn84::::res://Prefabs/player.tscn<>uid://myyym686sfqs::::res://Prefabs/room_controller.tscn<>res://Scripts/CameraController.gd<>res://Scripts/Room.gd
+Test_Scene.tscn::PackedScene::2539400867230827689::1782505992::0::1::::<><><>0<>0<><>::uid://dhs3eevs66l5c::::res://Map_TileSet.tres<>uid://bjg0n5puiqn84::::res://Prefabs/player.tscn<>uid://myyym686sfqs::::res://Prefabs/room_controller.tscn<>uid://vsvosl7d15hq::::res://Scripts/Room.gd<>uid://1cd7fcmo4x4l::::res://Prefabs/PlayerCamera.tscn<>uid://d3hpsi65muyod::::res://icon.svg<>uid://bb3310varjcxi::::res://Scripts/Components/HealthComponent.gd<>uid://dhjeaiul4ucdc::::res://Scripts/Components/HurtboxComponent.gd
 ::res://Scripts/::1756578332
 CameraController.gd::GDScript::1429199725868545440::1781464758::0::1::::CameraController<>Camera2D<><>0<>0<><>::
 GameManager.gd::GDScript::5465335872215309347::1756401130::0::1::::<>Node2D<><>0<>0<><>::
-Level Generator.gd::GDScript::4993075964279376065::1756416816::0::1::::LevelGenerator<>Node2D<><>0<>0<><>::
-Player.gd::GDScript::745463119738203590::1781462992::0::1::::Player<>CharacterBody2D<><>0<>0<><>::
+Level Generator.gd::GDScript::4993075964279376065::1781960288::0::1::::LevelGenerator<>Node2D<><>0<>0<><>::
+Player.gd::GDScript::745463119738203590::1781960790::0::1::::Player<>CharacterBody2D<><>0<>0<><>::
 Room.gd::GDScript::1512425537806670902::1756416920::0::1::::Room<>Node2D<><>0<>0<><>::
-RoomController.gd::GDScript::5044630324015736614::1756578332::0::1::::RoomController<>Node2D<><>0<>0<><>::
+RoomController.gd::GDScript::5044630324015736614::1781642782::0::1::::RoomController<>Node2D<><>0<>0<><>::
 ::res://Scripts/Components/::1781437216
-InputComponent.gd::GDScript::8282437349326981260::1781439088::0::1::::InputComponent<>Node<><>0<>0<><>::
-MovementComponent.gd::GDScript::1691908854768044438::1781479114::0::1::::MovementComponent<>Node<><>0<>0<><>::
+HealthComponent.gd::GDScript::2516159956431516342::1781959594::0::1::::HealthComponent<>Node<><>0<>0<><>::
+HurtboxComponent.gd::GDScript::7669406675925355072::1782067292::0::1::::HurtboxComponent<>Area2D<><>0<>0<><>::
+InputComponent.gd::GDScript::8282437349326981260::1781960024::0::1::::InputComponent<>Node<><>0<>0<><>::
+MovementComponent.gd::GDScript::1691908854768044438::1781960208::0::1::::MovementComponent<>Node<><>0<>0<><>::
+WeaponComponent.gd::GDScript::6443741255317772344::1782082238::0::1::::WeaponComponent<>Node<><>0<>0<><>::
 ::res://Temp Backups/::1750792420
 Level Generator Backup.gd::GDScript::7099071850623279212::1750628506::0::1::::<>Node2D<><>0<>0<><>::

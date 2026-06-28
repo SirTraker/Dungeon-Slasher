@@ -6,7 +6,7 @@ class_name MovementComponent extends Node
 
 var direction : Vector2 = Vector2.ZERO
 
-func move(_direction : Vector2,delta : float) -> void:
+func move(_direction : Vector2,_delta : float) -> void:
 	if body == null:
 		push_error('Body not defined') 
 		return

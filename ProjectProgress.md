@@ -7,8 +7,8 @@
 [✓] RoomController
 [✓] InputComponent
 [✓] MovementComponent
+[✓] HealthComponent
 
-[ ] HealthComponent
 [ ] WeaponComponent
 [ ] Projectile
 [ ] Enemy

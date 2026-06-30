@@ -2,67 +2,146 @@
 
 [ext_resource type="Texture2D" uid="uid://cxf4vyp1pmfem" path="res://Aseprite/wearpons.png" id="1_6ht81"]
 [ext_resource type="Script" uid="uid://cmwua8jgppcdn" path="res://Prefabs/Sword.gd" id="1_kplri"]
+[ext_resource type="Texture2D" uid="uid://dyw501edrneb1" path="res://Aseprite/sphere.png" id="3_4ldd0"]
+[ext_resource type="Script" uid="uid://gkjobwsgvlg3" path="res://Prefabs/SwordTrail.gd" id="3_17og3"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_kplri"]
 atlas = ExtResource("1_6ht81")
-region = Rect2(19, 42, 10, 21)
+region = Rect2(16, 32, 16, 32)
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_6ht81"]
 radius = 4.0
 height = 16.0
+
+[sub_resource type="Curve" id="Curve_4ldd0"]
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(1, 1), 0.0, 0.0, 0, 0]
+point_count = 2
 
 [sub_resource type="Animation" id="Animation_kplri"]
 length = 0.001
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath("Sprite2D:position")
+tracks/0/path = NodePath("Pivot/Sprite2D:position")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 0,
-"values": [Vector2(6, -5)]
+"values": [Vector2(0, 0)]
 }
 tracks/1/type = "value"
 tracks/1/imported = false
 tracks/1/enabled = true
-tracks/1/path = NodePath("Sprite2D:rotation")
+tracks/1/path = NodePath("Pivot/Sprite2D:rotation")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 0,
-"values": [-0.2617994]
+"values": [0.0]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("Pivot/Sprite2D/HitBox/CollisionShape2D:disabled")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath(".:can_rotate")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("Line2D:visible")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
 }
 
 [sub_resource type="Animation" id="Animation_17og3"]
 resource_name = "swing"
+length = 0.4
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath("Sprite2D:position")
+tracks/0/path = NodePath("Pivot/Sprite2D:position")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
-"times": PackedFloat32Array(0, 0.03333334, 0.2, 0.26666668),
-"transitions": PackedFloat32Array(1, 1, 1, 1),
+"times": PackedFloat32Array(0, 0.033333335, 0.16666667, 0.33333334),
+"transitions": PackedFloat32Array(1, 1, 0.5, -2),
 "update": 0,
-"values": [Vector2(6, -5), Vector2(6, -7), Vector2(6, 7), Vector2(6, -5)]
+"values": [Vector2(0, 0), Vector2(0, -8), Vector2(0, 8), Vector2(0, 0)]
 }
 tracks/1/type = "value"
 tracks/1/imported = false
 tracks/1/enabled = true
-tracks/1/path = NodePath("Sprite2D:rotation")
+tracks/1/path = NodePath("Pivot/Sprite2D:rotation")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/keys = {
-"times": PackedFloat32Array(0, 0.03333334, 0.2, 0.26666668),
-"transitions": PackedFloat32Array(1, 1, 1, 1),
+"times": PackedFloat32Array(0, 0.033333335, 0.16666667, 0.33333334),
+"transitions": PackedFloat32Array(1, 1, 0.5, -2),
 "update": 0,
-"values": [-0.2617994, -0.43633232, 2.705260340591211, -0.2617994]
+"values": [0.0, -0.5235987755982988, 3.665191429188092, 0.0]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("Pivot/Sprite2D/HitBox/CollisionShape2D:disabled")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0, 0.033333335, 0.16666667),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 1,
+"values": [true, false, true]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath(".:can_rotate")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0, 0.33333334),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [false, true]
+}
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("Line2D:visible")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(0, 0.033333335, 0.16666667),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 1,
+"values": [false, true, false]
 }
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_4ldd0"]
@@ -74,21 +153,39 @@ _data = {
 [node name="WearponSword" type="Node2D" unique_id=939064701]
 script = ExtResource("1_kplri")
 
-[node name="Sprite2D" type="Sprite2D" parent="." unique_id=1223127268]
+[node name="Pivot" type="Marker2D" parent="." unique_id=1370000046]
+position = Vector2(8, 0)
+
+[node name="Sprite2D" type="Sprite2D" parent="Pivot" unique_id=1223127268]
 y_sort_enabled = true
-position = Vector2(6, -5)
-rotation = -0.2617994
 scale = Vector2(0.75, 0.75)
 texture = SubResource("AtlasTexture_kplri")
+offset = Vector2(0, -8)
 
-[node name="HitBox" type="Area2D" parent="Sprite2D" unique_id=554143635]
-position = Vector2(0, 5)
+[node name="HitBox" type="Area2D" parent="Pivot/Sprite2D" unique_id=554143635]
+position = Vector2(0, 2)
 collision_layer = 2
 collision_mask = 0
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Sprite2D/HitBox" unique_id=1381740754]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Pivot/Sprite2D/HitBox" unique_id=1381740754]
+visible = false
 position = Vector2(0, -9)
 shape = SubResource("CapsuleShape2D_6ht81")
+disabled = true
+
+[node name="Marker2D" type="Marker2D" parent="Pivot/Sprite2D" unique_id=719524729]
+position = Vector2(0, -6)
+
+[node name="Line2D" type="Line2D" parent="." unique_id=795100058 node_paths=PackedStringArray("target")]
+visible = false
+show_behind_parent = true
+position = Vector2(-88, 6)
+points = PackedVector2Array(96, -10.5, 96, -10.5, 96, -10.5, 96, -10.5, 96, -10.5, 96, -10.5, 96, -10.5, 96, -10.5, 96, -10.5, 96, -10.5, 96, -10.5, 96, -10.5, 96, -10.5, 96, -10.5, 96, -10.5, 96, -10.5, 96, -10.5, 96, -10.5, 96, -10.5, 96, -10.5, 96, -10.5, 96, -10.5, 96, -10.5, 96, -10.5, 96, -10.5, 96, -10.5, 96, -10.5, 96, -10.5, 96, -10.5, 96, -10.5)
+width_curve = SubResource("Curve_4ldd0")
+texture = ExtResource("3_4ldd0")
+texture_mode = 2
+script = ExtResource("3_17og3")
+target = NodePath("../Pivot/Sprite2D/Marker2D")
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=575345025]
 libraries/ = SubResource("AnimationLibrary_4ldd0")

@@ -1,2 +1,3 @@
-res://Prefabs/level_generator.tscn
+res://Prefabs/sword.tscn
 res://Map_TileSet.tres
+res://Prefabs/SwordTrail.gd

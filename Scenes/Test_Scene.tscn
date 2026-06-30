@@ -68,9 +68,3 @@ shape = SubResource("RectangleShape2D_yn6en")
 
 [node name="Player" parent="." unique_id=1424757072 instance=ExtResource("2_7e24j")]
 position = Vector2(120, 120)
-
-[node name="Sprite2D" parent="Player" index="0" unique_id=527970631]
-top_level = false
-
-[editable path="Player"]
-[editable path="Player/WearponSword"]

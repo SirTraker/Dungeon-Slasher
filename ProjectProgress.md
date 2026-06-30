@@ -10,6 +10,7 @@
 [✓] HealthComponent
 
 [ ] WeaponComponent
-[ ] Projectile
 [ ] Enemy
+[ ] Projectile
 [ ] Door
+[ ] Corrigir Layering da Tilemap

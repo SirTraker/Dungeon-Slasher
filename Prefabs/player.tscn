@@ -5,9 +5,9 @@
 [ext_resource type="Script" uid="uid://ydtqylxwjxhe" path="res://Scripts/Components/MovementComponent.gd" id="4_2nftw"]
 [ext_resource type="Script" uid="uid://dqacsehs311l5" path="res://Scripts/Components/InputComponent.gd" id="4_knrd4"]
 [ext_resource type="Script" uid="uid://bb3310varjcxi" path="res://Scripts/Components/HealthComponent.gd" id="6_hck1p"]
-[ext_resource type="PackedScene" uid="uid://bb4n6m30p10ih" path="res://Prefabs/sword.tscn" id="7_4qbli"]
-[ext_resource type="Script" uid="uid://cmwua8jgppcdn" path="res://Prefabs/Sword.gd" id="7_08u7w"]
+[ext_resource type="Script" uid="uid://cx2nqhpj8f7mi" path="res://Scripts/Components/WeaponComponent.gd" id="7_08u7w"]
 [ext_resource type="Script" uid="uid://dhjeaiul4ucdc" path="res://Scripts/Components/HurtboxComponent.gd" id="7_juxdh"]
+[ext_resource type="PackedScene" uid="uid://bb4n6m30p10ih" path="res://Prefabs/WeaponSword.tscn" id="8_4qbli"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_oa4no"]
 atlas = ExtResource("2_qqpji")
@@ -128,12 +128,13 @@ metadata/_custom_type_script = "uid://dhjeaiul4ucdc"
 position = Vector2(0, -0.5)
 shape = SubResource("RectangleShape2D_4qbli")
 
-[node name="WearponComponent" type="Node2D" parent="." unique_id=258500619]
+[node name="WeaponComponent" type="Node2D" parent="." unique_id=1679424974 node_paths=PackedStringArray("current_weapon")]
 unique_name_in_owner = true
 script = ExtResource("7_08u7w")
-metadata/_custom_type_script = "uid://cmwua8jgppcdn"
+current_weapon = NodePath("WeaponSword")
+metadata/_custom_type_script = "uid://cx2nqhpj8f7mi"
 
-[node name="WearponSword" parent="." unique_id=939064701 instance=ExtResource("7_4qbli")]
+[node name="WeaponSword" parent="WeaponComponent" unique_id=939064701 instance=ExtResource("8_4qbli")]
 
 [connection signal="died" from="HealthComponent" to="." method="_on_health_component_died"]
 [connection signal="health_changed" from="HealthComponent" to="." method="_on_health_component_health_changed"]

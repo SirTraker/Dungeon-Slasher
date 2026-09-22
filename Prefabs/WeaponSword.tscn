@@ -1,9 +1,10 @@
 [gd_scene format=3 uid="uid://bb4n6m30p10ih"]
 
-[ext_resource type="Texture2D" uid="uid://cxf4vyp1pmfem" path="res://Aseprite/wearpons.png" id="1_6ht81"]
-[ext_resource type="Script" uid="uid://cmwua8jgppcdn" path="res://Prefabs/Sword.gd" id="1_kplri"]
+[ext_resource type="Texture2D" uid="uid://cxf4vyp1pmfem" path="res://Aseprite/weapons.png" id="1_6ht81"]
+[ext_resource type="Script" uid="uid://cmwua8jgppcdn" path="res://Prefabs/WeaponSword.gd" id="1_kplri"]
 [ext_resource type="Texture2D" uid="uid://dyw501edrneb1" path="res://Aseprite/sphere.png" id="3_4ldd0"]
 [ext_resource type="Script" uid="uid://gkjobwsgvlg3" path="res://Prefabs/SwordTrail.gd" id="3_17og3"]
+[ext_resource type="Script" uid="uid://cb7lk8vvl16u1" path="res://Scripts/Components/HitboxComponent.gd" id="3_n774r"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_kplri"]
 atlas = ExtResource("1_6ht81")
@@ -46,7 +47,7 @@ tracks/1/keys = {
 tracks/2/type = "value"
 tracks/2/imported = false
 tracks/2/enabled = true
-tracks/2/path = NodePath("Pivot/Sprite2D/HitBox/CollisionShape2D:disabled")
+tracks/2/path = NodePath("Pivot/Sprite2D/HitboxComponent/CollisionShape2D:disabled")
 tracks/2/interp = 1
 tracks/2/loop_wrap = true
 tracks/2/keys = {
@@ -70,7 +71,7 @@ tracks/3/keys = {
 tracks/4/type = "value"
 tracks/4/imported = false
 tracks/4/enabled = true
-tracks/4/path = NodePath("Line2D:visible")
+tracks/4/path = NodePath("TrailLine:visible")
 tracks/4/interp = 1
 tracks/4/loop_wrap = true
 tracks/4/keys = {
@@ -91,7 +92,7 @@ tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
 "times": PackedFloat32Array(0, 0.033333335, 0.16666667, 0.33333334),
-"transitions": PackedFloat32Array(1, 1, 0.5, -2),
+"transitions": PackedFloat32Array(1, 2, -2, -2),
 "update": 0,
 "values": [Vector2(0, 0), Vector2(0, -8), Vector2(0, 8), Vector2(0, 0)]
 }
@@ -103,14 +104,14 @@ tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/keys = {
 "times": PackedFloat32Array(0, 0.033333335, 0.16666667, 0.33333334),
-"transitions": PackedFloat32Array(1, 1, 0.5, -2),
+"transitions": PackedFloat32Array(1, 2, -2, -2),
 "update": 0,
 "values": [0.0, -0.5235987755982988, 3.665191429188092, 0.0]
 }
 tracks/2/type = "value"
 tracks/2/imported = false
 tracks/2/enabled = true
-tracks/2/path = NodePath("Pivot/Sprite2D/HitBox/CollisionShape2D:disabled")
+tracks/2/path = NodePath("Pivot/Sprite2D/HitboxComponent/CollisionShape2D:disabled")
 tracks/2/interp = 1
 tracks/2/loop_wrap = true
 tracks/2/keys = {
@@ -134,7 +135,7 @@ tracks/3/keys = {
 tracks/4/type = "value"
 tracks/4/imported = false
 tracks/4/enabled = true
-tracks/4/path = NodePath("Line2D:visible")
+tracks/4/path = NodePath("TrailLine:visible")
 tracks/4/interp = 1
 tracks/4/loop_wrap = true
 tracks/4/keys = {
@@ -150,7 +151,7 @@ _data = {
 &"swing": SubResource("Animation_17og3")
 }
 
-[node name="WearponSword" type="Node2D" unique_id=939064701]
+[node name="WeaponSword" type="Node2D" unique_id=939064701]
 script = ExtResource("1_kplri")
 
 [node name="Pivot" type="Marker2D" parent="." unique_id=1370000046]
@@ -162,30 +163,33 @@ scale = Vector2(0.75, 0.75)
 texture = SubResource("AtlasTexture_kplri")
 offset = Vector2(0, -8)
 
-[node name="HitBox" type="Area2D" parent="Pivot/Sprite2D" unique_id=554143635]
+[node name="HitboxComponent" type="Area2D" parent="Pivot/Sprite2D" unique_id=980401384]
 position = Vector2(0, 2)
-collision_layer = 2
-collision_mask = 0
+collision_layer = 0
+collision_mask = 2
+script = ExtResource("3_n774r")
+metadata/_custom_type_script = "uid://cb7lk8vvl16u1"
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Pivot/Sprite2D/HitBox" unique_id=1381740754]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Pivot/Sprite2D/HitboxComponent" unique_id=1381740754]
 visible = false
 position = Vector2(0, -9)
 shape = SubResource("CapsuleShape2D_6ht81")
 disabled = true
 
-[node name="Marker2D" type="Marker2D" parent="Pivot/Sprite2D" unique_id=719524729]
+[node name="TrailPoint" type="Marker2D" parent="Pivot/Sprite2D" unique_id=719524729]
 position = Vector2(0, -6)
 
-[node name="Line2D" type="Line2D" parent="." unique_id=795100058 node_paths=PackedStringArray("target")]
+[node name="TrailLine" type="Line2D" parent="." unique_id=795100058 node_paths=PackedStringArray("target")]
 visible = false
 show_behind_parent = true
-position = Vector2(-88, 6)
-points = PackedVector2Array(96, -10.5, 96, -10.5, 96, -10.5, 96, -10.5, 96, -10.5, 96, -10.5, 96, -10.5, 96, -10.5, 96, -10.5, 96, -10.5, 96, -10.5, 96, -10.5, 96, -10.5, 96, -10.5, 96, -10.5, 96, -10.5, 96, -10.5, 96, -10.5, 96, -10.5, 96, -10.5, 96, -10.5, 96, -10.5, 96, -10.5, 96, -10.5, 96, -10.5, 96, -10.5, 96, -10.5, 96, -10.5, 96, -10.5, 96, -10.5)
+position = Vector2(-208, -33)
 width_curve = SubResource("Curve_4ldd0")
 texture = ExtResource("3_4ldd0")
 texture_mode = 2
 script = ExtResource("3_17og3")
-target = NodePath("../Pivot/Sprite2D/Marker2D")
+target = NodePath("../Pivot/Sprite2D/TrailPoint")
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=575345025]
 libraries/ = SubResource("AnimationLibrary_4ldd0")
+
+[connection signal="area_entered" from="Pivot/Sprite2D/HitboxComponent" to="Pivot/Sprite2D/HitboxComponent" method="_on_area_entered"]
